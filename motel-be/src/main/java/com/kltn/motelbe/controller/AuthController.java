@@ -23,7 +23,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.kltn.motelbe.constant.RoleConstant;
 import com.kltn.motelbe.entity.Role;
 import com.kltn.motelbe.entity.User;
-import com.kltn.motelbe.exception.BadRequestException;
 import com.kltn.motelbe.exception.WebServerException;
 import com.kltn.motelbe.payload.request.LoginReq;
 import com.kltn.motelbe.payload.request.SignUpReq;
