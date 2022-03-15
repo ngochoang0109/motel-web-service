@@ -1,13 +1,12 @@
+import Footer from "../components/layout/Footer/Footer";
+import NavBar from "../components/layout/NavBar/NavBar";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Motel web site
-        </p>
-      </header>
-    </div>
+    <>
+      <NavBar></NavBar>
+      <Footer></Footer>
+    </>
   );
 }
 
