@@ -1,5 +1,6 @@
 package com.kltn.motelbe.controller;
 
+import java.awt.PageAttributes.MediaType;
 import java.net.URI;
 import java.util.Collections;
 import java.util.Date;
@@ -81,7 +82,7 @@ public class AuthController {
 		URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/{username}")
 				.buildAndExpand(result.getUsername()).toUri();
 
-		return ResponseEntity.created(location).body(new ApiResponse(new Date(), true, "User registered successfully"));
+		return new ResponseEntity(new ApiResponse(new Date(), true, "User registered successfully"),HttpStatus.OK);
 	}
 
 	@PostMapping("/signin")

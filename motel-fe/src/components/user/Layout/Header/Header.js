@@ -1,10 +1,11 @@
-import logo from './../../../assets/images/icon-ui.png';
+import { Link, NavLink } from 'react-router-dom';
+import logo from './../../../../assets/images/icon-ui.png';
 import './Header.css';  
 const Header=()=>{
     return(
         <nav>
             <div className="logo">
-                <img  src={logo} alt="Logo Image"/>
+                <NavLink to='/'><img  src={logo} alt="logo"></img></NavLink>
             </div>
             <ul className="nav-links">
                 <li><a href="/#"><i className="fas fa-solid fa-landmark"></i> Trang chủ</a></li>
@@ -21,7 +22,8 @@ const Header=()=>{
                         <input type="checkbox" id="btn"></input>
                         <ul className="menu">
                             <li><a href="/#">Thông tin người dùng</a></li>
-                            <li><a href="/#">Đăng nhập/Đăng xuất</a></li>
+                            <li><Link to="/register">Đăng ký</Link></li>
+                            <li><Link to="/login">Đăng nhập/Đăng xuất</Link></li>
                             <li><a href="/#">Lịch sử giao dịch</a></li>
                         </ul>
                     </div>

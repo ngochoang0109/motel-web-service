@@ -1,0 +1,13 @@
+.error-msg {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 3px 3px 3px 3px;
+    margin: auto;
+    width: 80%;
+}
+
+.error-msg {
+    color: #D8000C;
+    background-color: #FFBABA;
+}
+  
