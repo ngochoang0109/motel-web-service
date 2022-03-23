@@ -56,6 +56,8 @@ public class Accommodation {
 	@Column(name = "water_price")
 	private double waterPrice;
 	
+	private double deposit; // deposit do chu nha quy dinh
+	
 	@Column(name = "x_coordinate")
 	private double xCoordinate;
 	

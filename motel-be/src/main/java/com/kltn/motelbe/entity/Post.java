@@ -40,10 +40,12 @@ public class Post {
 	@Column(name = "last_update")
 	private Date lastUpdate;
 	
-	private boolean del;
+	private boolean enabled;
 	
 	@Column(name = "create_at")
 	private Date createAt;
+	
+	private String brief; 
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")

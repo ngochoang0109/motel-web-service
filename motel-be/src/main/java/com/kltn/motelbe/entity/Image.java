@@ -31,10 +31,8 @@ public class Image {
 	@Column(name = "file_name")
 	private String fileName;
 	
-	@Column(name = "file_type")
-	private String fileType;
-	
-	private byte[] data;
+	@Column(name = "file_type") // 1 cho avt, 0 cho image thuong
+	private boolean fileType;
 	
 	@ManyToOne
 	@JoinColumn(name = "post_id")
