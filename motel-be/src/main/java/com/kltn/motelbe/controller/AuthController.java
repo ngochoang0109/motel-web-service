@@ -1,5 +1,4 @@
 package com.kltn.motelbe.controller;
-
 import java.net.URI;
 import java.util.Collections;
 import java.util.Date;
@@ -54,12 +53,12 @@ public class AuthController {
 	@PostMapping("/signup")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpReq signUpReq) {
 		if (userRepository.existsByUsername(signUpReq.getUsername())) {
-			return new ResponseEntity<>(new ApiResponse(new Date(), false, "Username is already taken!"),
+			return new ResponseEntity<ApiResponse>(new ApiResponse(new Date(), false, "Username is already taken!"),
 					HttpStatus.BAD_REQUEST);
 		}
 
 		if (userRepository.existsByEmail(signUpReq.getEmail())) {
-			return new ResponseEntity<>(new ApiResponse(new Date(), false, "Email Address already in use!"),
+			return new ResponseEntity<ApiResponse>(new ApiResponse(new Date(), false, "Email Address already in use!"),
 					HttpStatus.BAD_REQUEST);
 		}
 
@@ -81,13 +80,15 @@ public class AuthController {
 		URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/{username}")
 				.buildAndExpand(result.getUsername()).toUri();
 
-		return ResponseEntity.created(location).body(new ApiResponse(new Date(), true, "User registered successfully"));
+		return new ResponseEntity(new ApiResponse(new Date(), true, "User registered successfully"),HttpStatus.OK);
 	}
 
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginReq loginRequest) {
+		
 		UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken=
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsernameOrEmail(), loginRequest.getPassword());
+		
 		Authentication authentication=authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);

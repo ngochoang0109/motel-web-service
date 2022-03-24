@@ -1,13 +1,22 @@
-
+import { Route } from "react-router-dom";
+import Layout from "../components/user/Layout/Layout";
+import RegisterPage from "./../page/RegisterPage/RegisterPage";
+import LoginPage from "./../page/LoginPage/LoginPage";
+import { Switch } from "react-router-dom";
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Motel web site
-        </p>
-      </header>
-    </div>
+    <Switch>
+      <Route path="/" exact>
+        <Layout></Layout>
+      </Route>
+      <Route path="/register" exact>
+        <RegisterPage />
+      </Route>
+      <Route path="/login" exact>
+        <LoginPage />
+      </Route>
+    </Switch>
+
   );
 }
 
