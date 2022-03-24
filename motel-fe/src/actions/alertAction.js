@@ -1,16 +1,18 @@
 import * as alertConstant from "../constants/alertConstant";
 
-const success=(message)=>{
+const success=(data)=>{
     return{
         type:alertConstant.SUCCESS,
-        message:message
+        message:data.message,
+        success:data.success
     }
 }
 
-const error=(message)=>{
+const error=(data)=>{
     return{
         type:alertConstant.ERROR,
-        message:message
+        message:data.message,
+        success:data.success
     }
 }
 

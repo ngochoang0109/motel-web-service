@@ -5,15 +5,31 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './app/App';
 import store from './store';
 import reportWebVitals from './reportWebVitals';
+import { Router } from 'react-router-dom';
+import history from './helper/history';
+import { transitions, positions, Provider as AlertProvider } from 'react-alert';
+import AlertTemplate from 'react-alert-template-basic';
+
+// optional configuration
+const options = {
+  position: positions.TOP_RIGHT,
+  offset: '30px',
+  transition: transitions.SCALE
+}
 
 ReactDOM.render(
-  <Provider store={store}>
-    <React.StrictMode>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </React.StrictMode>
-  </Provider>,
+  <Router history={history}>
+    <Provider store={store}>
+      <React.StrictMode>
+        <BrowserRouter>
+          <AlertProvider template={AlertTemplate} {...options}>
+            <App />
+          </AlertProvider>
+        </BrowserRouter>
+      </React.StrictMode>
+    </Provider>
+  </Router>
+  ,
   document.getElementById('root')
 );
 

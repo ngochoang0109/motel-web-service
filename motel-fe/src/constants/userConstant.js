@@ -1,3 +1,9 @@
-export const  REGISTER_REQUEST= 'USERS_REGISTER_REQUEST';
-export const  REGISTER_SUCCESS= 'USERS_REGISTER_SUCCESS';
-export const  REGISTER_FAILURE= 'USERS_REGISTER_FAILURE';
+const userConstant={
+    LOGIN_SUCCESS: 'USER_LOGIN_SUCCESS',
+    LOGIN_FAILURE: 'USER_LOGIN_FAILURE',
+
+    LOGOUT: 'USER_LOGOUT'
+};
+
+export default userConstant;
+
