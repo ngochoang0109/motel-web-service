@@ -4,8 +4,10 @@ import RegisterPage from "./../page/RegisterPage/RegisterPage";
 import LoginPage from "./../page/LoginPage/LoginPage";
 import { Switch } from "react-router-dom";
 function App() {
+
   return (
     <Switch>
+      {console.log("Render")}
       <Route path="/" exact>
         <Layout></Layout>
       </Route>

@@ -5,20 +5,31 @@ import { Link, NavLink } from 'react-router-dom';
 import { userActions } from '../../../../actions/userAction';
 import logo from './../../../../assets/images/icon-ui.png';
 import './Header.css';
+import * as alertAction from './../../../../actions/alertAction';
+import * as alertConstant from './../../../../constants/alertConstant';
+
+
 const Header = () => {
     const alert = useAlert();
-    const auth = useSelector(state => state.authReducer.loggedIn);
-    console.log(auth)
+    const alertStatus = useSelector(state => state.alertReducer.success);
+    const auth=useSelector(state => state.authReducer.loggedIn);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (auth) {
+        if (alertStatus) {
             alert.show('Bạn đã đăng nhập thành công', {
                 timeout: 3000,
-                type: 'success'
+                type: 'success',
+                onClose:()=>{
+                    dispatch(alertAction.success({
+                        type:alertConstant.SUCCESS,
+                        message:"",
+                        success:false
+                    }))
+                }
             })
-        }
-    })
+        };
+    },[alertStatus])
 
     const handlerLogout = () => {
         dispatch(userActions.logout());

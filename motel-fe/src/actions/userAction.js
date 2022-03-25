@@ -1,6 +1,7 @@
 import userConstant from '../constants/userConstant';
 import { userService } from '../service/userService';
 import * as alertAction from './alertAction';
+import * as alertConstant from './../constants/alertConstant';
 
 function register(user) {
     return (dispatch) => {
@@ -18,7 +19,13 @@ const login = (user) => {
     return (dispatch) => {
         return userService.loginUser(user)
             .then((response) => {
-                localStorage.setItem('tokenUser', JSON.stringify(response.data))
+                localStorage.setItem('tokenUser', JSON.stringify(response.data));
+                const alertData = {
+                    type: alertConstant.SUCCESS,
+                    message: "Đăng nhập thành công",
+                    success: true
+                }
+                dispatch(alertAction.success(alertData));
                 return dispatch({
                     type: userConstant.LOGIN_SUCCESS,
                     user: user

@@ -56,8 +56,6 @@ const LoginPage = () => {
                 })
             }
         }
-
-
     }, [auth, message])
 
     const handlerSubmit = async (event) => {
