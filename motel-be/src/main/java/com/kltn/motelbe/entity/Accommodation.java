@@ -1,13 +1,19 @@
 package com.kltn.motelbe.entity;
 
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -64,13 +70,21 @@ public class Accommodation {
 	@Column(name = "y_coordinate")
 	private double yCoordinate;
 	
-	@ManyToOne
-	@JoinColumn(name = "district_id")
-	private District district;
+//	@ManyToOne
+//	@JoinColumn(name = "district_id")
+//	private District district;
 	
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "post_id", referencedColumnName = "id")
 	private Post post;
+	
+	@ManyToMany(fetch= FetchType.EAGER)
+	@JoinTable(
+			name="accommodation_video",
+			joinColumns = @JoinColumn(name="accommodation_id"),
+			inverseJoinColumns = @JoinColumn(name="video_id")
+			)
+	private Set<Video> videos = new HashSet<>();
 	
 
 }
