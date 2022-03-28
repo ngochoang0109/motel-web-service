@@ -51,8 +51,8 @@ public class Criteria {
 	@JoinColumn(name = "user_id")
 	private User user;
 	
-	@ManyToOne
-	@JoinColumn(name = "district_id")
-	private District district;
+//	@ManyToOne
+//	@JoinColumn(name = "district_id")
+//	private District district;
 	
 }
