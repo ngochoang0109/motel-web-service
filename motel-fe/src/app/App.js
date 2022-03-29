@@ -3,12 +3,15 @@ import Layout from "../components/user/Layout/Layout";
 import RegisterPage from "./../page/RegisterPage/RegisterPage";
 import LoginPage from "./../page/LoginPage/LoginPage";
 import { Switch } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 function App() {
 
   return (
     <Switch>
-      {console.log("Render")}
       <Route path="/" exact>
+        <Redirect to="/home"></Redirect>
+      </Route>
+      <Route path="/home">
         <Layout></Layout>
       </Route>
       <Route path="/register" exact>

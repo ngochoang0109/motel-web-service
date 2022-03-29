@@ -43,7 +43,7 @@ const LoginPage = () => {
             mounted.current = true;
         } else {
             if (auth === true) {
-                history.push('/');
+                history.push('/home');
             }
             else {
                 alert.show("Nhập sai tài khoản hoặc mật khẩu", {

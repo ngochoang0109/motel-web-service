@@ -1,0 +1,12 @@
+/* CONTAINER CONTENT */
+
+.container-content {
+    margin-top: 2rem;
+    margin-right: 18rem;
+    margin-left: 18rem;
+    margin-bottom: 1rem;
+}
+
+.container-content *{
+    color:black;
+}

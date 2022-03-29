@@ -1,16 +1,10 @@
 /* FOOTER */
 
 footer{
-    bottom: 0;
-    left: 0;
-    right: 0;
     background: #053742;
-    height: 0.4rem;
-    width: 100vw;
-    padding-top: 40px;
+    width: 100%;
     color: #f2f5f7;
     box-shadow: 0 3px 20px rgba(0,0,0,0.2);
-    position: fixed;
 }
 .footer-content{
     display: flex;
@@ -24,5 +18,4 @@ footer{
     font-weight: 300;
     text-transform: capitalize;
     line-height: 3rem;
-    padding-bottom: 40px;
 }
