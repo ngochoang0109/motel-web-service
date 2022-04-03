@@ -54,7 +54,7 @@ const Header = () => {
                         </label>
                         <input type="checkbox" id="btn"></input>
                         <ul className="menu">
-                            <li><a href="/#">Thông tin người dùng</a></li>
+                            <li><a href="/user/1">Thông tin người dùng</a></li>
                             {auth ? "" : <li><Link to="/register">Đăng ký</Link></li>}
                             {auth ? <li><Link to="/login" onClick={handlerLogout}>Đăng xuất</Link></li>
                                 : <li><Link to="/login">Đăng nhập</Link></li>}

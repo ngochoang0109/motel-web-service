@@ -2,6 +2,7 @@ import { Route } from "react-router-dom";
 import Layout from "../components/user/Layout/Layout";
 import RegisterPage from "./../page/RegisterPage/RegisterPage";
 import LoginPage from "./../page/LoginPage/LoginPage";
+import UserProfile from "../page/UserProfile/UserProfile";
 import { Switch } from "react-router-dom";
 import { Redirect } from "react-router-dom";
 function App() {
@@ -19,6 +20,9 @@ function App() {
       </Route>
       <Route path="/login" exact>
         <LoginPage />
+      </Route>
+      <Route path="/user/1" exact>
+        <UserProfile />
       </Route>
     </Switch>
 
