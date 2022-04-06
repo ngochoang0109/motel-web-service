@@ -34,8 +34,9 @@ public class Image {
 	@Column(name = "file_type") // 1 cho avt, 0 cho image thuong
 	private boolean fileType;
 	
-//	@ManyToOne
-//	@JoinColumn(name = "post_id")
-//	private Post post;
+	@ManyToOne
+	@JoinColumn(name = "post_id")
+	private Post post;
 
+	
 }

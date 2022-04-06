@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.kltn.motelbe.constant.RoleConstant;
 import com.kltn.motelbe.security.jwt.JwtAuthenticationEntryPoint;
 import com.kltn.motelbe.security.jwt.JwtAuthenticationFilter;
 import com.kltn.motelbe.security.service.UserDetailsServiceImpl;

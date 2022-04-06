@@ -28,7 +28,7 @@ const login = (user) => {
                 dispatch(alertAction.success(alertData));
                 return dispatch({
                     type: userConstant.LOGIN_SUCCESS,
-                    user: user
+                    user: response.data
                 });
             })
             .catch((error) => {

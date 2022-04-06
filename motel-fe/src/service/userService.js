@@ -1,7 +1,10 @@
+import axios from "axios";
+import { API_BASE_URL } from "../constants/API";
+import { authHeader } from "../helper/authHeader";
 import callAPI from "../utils/callAPI";
 
 const registerUser = (user) => {
-  return callAPI("auth/signup", "POST", user)
+  return callAPI({},"auth/signup", "POST", user)
     .then((response) => {
       return response.data;
     })
@@ -11,7 +14,7 @@ const registerUser = (user) => {
 }
 
 const loginUser = (user) => {
-  return callAPI("auth/signin","POST",user);
+  return callAPI({},"auth/signin","POST",user);
 }
 
 const logout=()=> {

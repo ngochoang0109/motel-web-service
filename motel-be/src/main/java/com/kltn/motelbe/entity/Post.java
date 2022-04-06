@@ -1,18 +1,15 @@
 package com.kltn.motelbe.entity;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -37,7 +34,10 @@ public class Post {
 	@Column(nullable = false)
 	private String title;
 	
-	@Column(nullable = false)
+	@Column(name = "phone", nullable = false)
+	private String phone;
+	
+	@Lob
 	private String content;
 	
 	private boolean approved;
@@ -56,16 +56,10 @@ public class Post {
 	@JoinColumn(name = "user_id")
 	private User user;
 	
-	@OneToOne(mappedBy = "post")
+	@OneToOne(mappedBy = "post",cascade=CascadeType.ALL)
 	private Accommodation accommodation;
 	
-	@ManyToMany(fetch= FetchType.EAGER)
-	@JoinTable(
-			name="post_image",
-			joinColumns = @JoinColumn(name="post_id"),
-			inverseJoinColumns = @JoinColumn(name="image_id")
-			)
-	private Set<Image> images = new HashSet<>();
+	
 
 }
 

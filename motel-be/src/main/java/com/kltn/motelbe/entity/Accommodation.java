@@ -42,16 +42,10 @@ public class Accommodation {
 	@Column(name = "air_conditioner")
 	private boolean airConditioner;
 	
-	private boolean cabletv;
-	
 	@Column(name = "electric_price")
 	private double electricPrice;
 	
-	private boolean heater;
-	
 	private boolean internet;
-	
-	private boolean motel;
 	
 	private boolean parking;
 	
@@ -65,18 +59,22 @@ public class Accommodation {
 	private double deposit; // deposit do chu nha quy dinh
 	
 	@Column(name = "x_coordinate")
-	private double xCoordinate;
+	private String xCoordinate;
 	
 	@Column(name = "y_coordinate")
-	private double yCoordinate;
-	
-//	@ManyToOne
-//	@JoinColumn(name = "district_id")
-//	private District district;
+	private String yCoordinate;
 	
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "post_id", referencedColumnName = "id")
 	private Post post;
+	
+	@ManyToMany(fetch= FetchType.EAGER)
+	@JoinTable(
+			name="accomodation_image",
+			joinColumns = @JoinColumn(name="accomodation_id"),
+			inverseJoinColumns = @JoinColumn(name="image_id")
+			)
+	private Set<Image> images = new HashSet<>();
 	
 	@ManyToMany(fetch= FetchType.EAGER)
 	@JoinTable(
