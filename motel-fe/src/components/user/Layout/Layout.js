@@ -3,7 +3,7 @@ import Footer from "./Footer/Footer";
 import { Route } from "react-router-dom";
 import PostPage from "../../../page/user/PostPage/PostPage";
 import Main from "./Main/Main";
-import PrivateRoute from "../../../common/PrivateRoute";
+import PrivateRoute from "./../../../common/PrivateRoute";
 import { Fragment } from "react";
 import PostManagementPage from "../../../page/user/PostManagementPage/PostManagementPage";
 import Hierarchical from "./Main/Hierarchical/Hierarchical";
