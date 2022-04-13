@@ -1,5 +1,5 @@
 package com.kltn.motelbe.controller;
-import java.net.URI;
+
 import java.util.Date;
 
 import javax.validation.Valid;
@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.kltn.motelbe.entity.User;
 import com.kltn.motelbe.payload.request.LoginReq;
 import com.kltn.motelbe.payload.request.SignUpReq;
 import com.kltn.motelbe.payload.response.ApiResponse;

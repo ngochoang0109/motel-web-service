@@ -1,6 +1,7 @@
 package com.kltn.motelbe.entity;
 
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,9 +35,14 @@ public class Image {
 	@Column(name = "file_type") // 1 cho avt, 0 cho image thuong
 	private boolean fileType;
 	
-	@ManyToOne
-	@JoinColumn(name = "post_id")
-	private Post post;
-
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "acommodation_id")
+	private Accommodation accommodation;
+	
+	public Image(String fileName, boolean fileType) {
+		super();
+		this.fileName = fileName;
+		this.fileType = fileType;
+	}
 	
 }

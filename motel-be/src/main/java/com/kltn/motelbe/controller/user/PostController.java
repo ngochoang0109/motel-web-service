@@ -3,46 +3,58 @@ package com.kltn.motelbe.controller.user;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.kltn.motelbe.entity.User;
+import com.kltn.motelbe.Paging.Paging;
+import com.kltn.motelbe.constant.PageAndSortConstant;
+import com.kltn.motelbe.dto.ImageDto;
 import com.kltn.motelbe.payload.request.PostRequest;
 import com.kltn.motelbe.payload.response.PostResponse;
-import com.kltn.motelbe.repository.UserRepository;
+import com.kltn.motelbe.service.ImageService;
 import com.kltn.motelbe.service.PostService;
 
 @RestController
 @RequestMapping("/api/posts")
 public class PostController {
 	
-	@Autowired
-	private UserRepository userRepository;
 	
 	@Autowired
 	private PostService postService;
 	
 	
+	@Autowired
+	private ImageService imageService;
+	
+	
 	@PostMapping
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public ResponseEntity<?> createPoll(@RequestPart("post") PostRequest postRequest,
-										@RequestPart("images") List<MultipartFile> images,
-										@RequestPart("videos") List<MultipartFile> videos,
+	public ResponseEntity<PostResponse> createPoll(@RequestPart("post") PostRequest postRequest,
+										@RequestPart(value = "images",required = false) List<MultipartFile> images,
+										@RequestPart(value = "videos",required = false) List<MultipartFile> videos,
 										Authentication authentication){
-		PostResponse postResponse= postService.savePost(postRequest, authentication.getName());
-		return null;
+		PostResponse postResponse= postService.savePost(postRequest,images, videos, authentication.getName());
+		return new ResponseEntity<PostResponse>(postResponse,HttpStatus.OK);
 	}
 	
 	@GetMapping
-	public List<User> getall(){
-		return this.userRepository.findAll();
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<Paging<PostResponse>> getPostsOfUser(
+			@RequestParam(value = "pageNo", defaultValue = PageAndSortConstant.PAGE_NO, required = false) int pageNo, 
+			@RequestParam(value = "pageSize", defaultValue = PageAndSortConstant.PAGE_SIZE, required = false) int pageSize,
+			@RequestParam(value = "sort", defaultValue = PageAndSortConstant.SORT, required = false) String field,
+			Authentication authentication){
+		Paging<PostResponse> posts= postService.getPostsOfUser(pageNo, pageSize, field, authentication.getName());
+		return new ResponseEntity<Paging<PostResponse>>(posts, HttpStatus.OK);
 	}
 	
 }

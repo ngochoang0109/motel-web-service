@@ -20,4 +20,12 @@ public class PostResponse {
 	private Double price;
 	private Date createdDate;
 	private String address;
+	public PostResponse(long id, String title, Double price, Date createdDate, String address) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.price = price;
+		this.createdDate = createdDate;
+		this.address = address;
+	}
 }

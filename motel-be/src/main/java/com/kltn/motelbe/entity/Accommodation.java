@@ -2,6 +2,7 @@ package com.kltn.motelbe.entity;
 
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -15,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -68,20 +70,10 @@ public class Accommodation {
     @JoinColumn(name = "post_id", referencedColumnName = "id")
 	private Post post;
 	
-	@ManyToMany(fetch= FetchType.EAGER)
-	@JoinTable(
-			name="accomodation_image",
-			joinColumns = @JoinColumn(name="accomodation_id"),
-			inverseJoinColumns = @JoinColumn(name="image_id")
-			)
-	private Set<Image> images = new HashSet<>();
+	@OneToMany(mappedBy="accommodation",cascade = CascadeType.ALL)
+    private Set<Image> images;
 	
-	@ManyToMany(fetch= FetchType.EAGER)
-	@JoinTable(
-			name="accommodation_video",
-			joinColumns = @JoinColumn(name="accommodation_id"),
-			inverseJoinColumns = @JoinColumn(name="video_id")
-			)
+	@OneToMany(mappedBy="accommodation",cascade = CascadeType.ALL)
 	private Set<Video> videos = new HashSet<>();
 	
 

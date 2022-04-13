@@ -5,20 +5,26 @@ import PostPage from "../../../page/user/PostPage/PostPage";
 import Main from "./Main/Main";
 import PrivateRoute from "../../../common/PrivateRoute";
 import { Fragment } from "react";
+import PostManagementPage from "../../../page/user/PostManagementPage/PostManagementPage";
+import Hierarchical from "./Main/Hierarchical/Hierarchical";
+import { Switch } from "react-router-dom";
 
 const Layout = (props) => {
     return (
         <Fragment>
             <NavBar></NavBar>
             <Main>
-                <Route path="/home" exact>
-                    <h1>This is home page</h1>
-                </Route>
-                <Route path="/home/user/posts" exact>
-                    <h1>This is posts page</h1>
-                </Route>
-                <PrivateRoute authenticated={props.authenticated}
-                    path="/home/user/posts/create-post" componentLoggedIn={PostPage}></PrivateRoute>
+                <Hierarchical></Hierarchical>
+                <Switch>
+                    <Route path="/home" exact>
+                        <h1>This is home page</h1>
+                    </Route>
+                    <PrivateRoute authenticated={props.authenticated}
+                        path="/home/user/posts/list-posts" componentLoggedIn={PostManagementPage}></PrivateRoute>
+                    <PrivateRoute authenticated={props.authenticated}
+                        path="/home/user/posts/create-post" componentLoggedIn={PostPage}></PrivateRoute>
+                </Switch>
+
             </Main>
             <Footer></Footer>
         </Fragment>

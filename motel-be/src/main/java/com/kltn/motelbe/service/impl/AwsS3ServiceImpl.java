@@ -21,63 +21,65 @@ import com.kltn.motelbe.service.AwsS3Service;
 
 @Service
 public class AwsS3ServiceImpl implements AwsS3Service {
-	
+
 	@Autowired
 	private AmazonS3 amazonS3;
-	
-    @Value("${aws.s3.bucket}")
-    private String bucket;
 
-    @Value("${aws.endpoint}")
-    private String endPoint;
-	
+	@Value("${aws.s3.bucket}")
+	private String bucket;
+
+	@Value("${aws.endpoint}")
+	private String endPoint;
+
 	@Override
 	public File convertMultiPartToFile(MultipartFile multipartFile) {
 		File convFile = new File(multipartFile.getOriginalFilename());
-	    FileOutputStream fos;
+		FileOutputStream fos;
 		try {
 			fos = new FileOutputStream(convFile);
 			fos.write(multipartFile.getBytes());
-		    fos.close();
+			fos.close();
 		} catch (FileNotFoundException e) {
 			throw new ResourceNotFoundException("File", "file", e.getMessage());
 		} catch (IOException e) {
 			throw new ResourceNotFoundException("File", "file", e.getMessage());
 		}
-	    return convFile;
+		return convFile;
 	}
-	
+
 	@Override
 	public String generateFileNameUnique(MultipartFile multipartFile) {
 		return new Date().getTime() + "-" + multipartFile.getOriginalFilename().replace(" ", "_");
 	}
-	
+
 	@Override
 	public void uploadToStore(String filename, File file) {
-		amazonS3.putObject(new PutObjectRequest(bucket, filename, file)
-	            .withCannedAcl(CannedAccessControlList.PublicRead));
+		amazonS3.putObject(
+				new PutObjectRequest(bucket, filename, file).withCannedAcl(CannedAccessControlList.PublicRead));
 	}
-	
+
 	@Override
 	public String uploadFile(MultipartFile multipartFile) {
-		 String fileUrl = "";
-		    try {
-		        File file = convertMultiPartToFile(multipartFile);
-		        String fileName = generateFileNameUnique(multipartFile);
-		        fileUrl = endPoint + "/" + bucket + "/" + fileName;
-		        uploadToStore(fileName, file);
-		        file.delete();
-		    } catch (Exception e) {
-		       e.printStackTrace();
-		    }
+		String fileUrl = "";
+		try {
+			File file = convertMultiPartToFile(multipartFile);
+			String fileName = generateFileNameUnique(multipartFile);
+			fileUrl = endPoint  + "/" + fileName;
+			uploadToStore(fileName, file);
+			file.delete();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return fileUrl;
 	}
-	
+
 	@Override
 	public List<String> uploadMulFile(List<MultipartFile> multipartFiles) {
-		List<String> fileUrls= new LinkedList<>();
-		for (MultipartFile multipartFile : multipartFiles) {
-			fileUrls.add(uploadFile(multipartFile));
+		List<String> fileUrls = new LinkedList<>();
+		if (multipartFiles!=null) {
+			for (MultipartFile multipartFile : multipartFiles) {
+				fileUrls.add(uploadFile(multipartFile));
+			}
 		}
 		return fileUrls;
 	}

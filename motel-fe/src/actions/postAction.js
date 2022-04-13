@@ -1,6 +1,8 @@
-
+import postConstant from './../constants/postConstant';
 import { postService } from "../service/postService";
 import { provinceAPI } from "../utils/provinceAPI";
+import * as alertAction from './alertAction';
+import * as alertConstant from './../constants/alertConstant';
 
 const addPostRequest=(postState, imageRequest, videoRequest)=>{
 
@@ -41,11 +43,20 @@ const addPostRequest=(postState, imageRequest, videoRequest)=>{
         post,
         accommodation,
     }
-    console.log(postRequest,imageRequest.images,videoRequest.videos)
+    
     return (dispatch)=>{
         return postService.createPost(postRequest,imageRequest.images,videoRequest.videos)
                     .then((response)=>{
-                        console.log(response.data)
+                        const alertData = {
+                            type: alertConstant.SUCCESS,
+                            message: "Tạo tin thành công",
+                            success: true
+                        }
+                        dispatch(alertAction.success(alertData));
+                        return (dispatch({
+                            type: postConstant.ADD_PRODUCT,
+                            post:response.data
+                        }))
                     })
                     .catch((error)=>{
 
@@ -53,6 +64,21 @@ const addPostRequest=(postState, imageRequest, videoRequest)=>{
     }
 }
 
+const getAllPosts=()=>{
+    return (dispatch)=>{
+        return postService.getAll()
+                .then((response)=>{
+                    console.log(response.data);
+                    return (dispatch({
+                        type: postConstant.GET_POSTS,
+                        page:response.data
+                    }))
+                })
+                .catch();
+    }
+}
+
 export const postAction={
-    addPostRequest
+    addPostRequest,
+    getAllPosts
 }

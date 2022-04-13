@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useAlert } from 'react-alert';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { postAction } from '../../../actions/postAction';
 import { provinceAPI } from '../../../utils/provinceAPI';
+import { useHistory } from "react-router-dom";
 import './PostPage.css';
+
 const PostPage = () => {
     const alert= useAlert();
     const dispatch=useDispatch();
+    const history= useHistory();
     const [provinceName, setProvinceName] = useState({
         namePro: ""
     });
@@ -187,18 +190,17 @@ const PostPage = () => {
         }
         return false;
     }
-
+    const alertStatus = useSelector(state => state.alertReducer);
     const onSubmitHandler=(event)=>{
         event.preventDefault();
         dispatch(postAction.addPostRequest(post,previewImage,video));
+        if(alertStatus){
+            history.replace("/home/user/posts/list-posts");
+        }
+       
     }
     return (
         <>
-            <div className="alert">
-                <a href="/#">Indicates</a>
-                <p>{`>>>>`}</p>
-                <a href="/#">Indicates</a>
-            </div>
             <div className="content">
                 <div className="title">
                     <h1>Đăng tin mới</h1>

@@ -1,4 +1,3 @@
-import { useAlert } from 'react-alert';
 import { useSelector } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
 import './PostButton.css';
@@ -10,16 +9,19 @@ const PostButton = () => {
 
     const goToPostPage = (event) => {
         if (!auth) {
-            history.push("/login");
+            history.replace("/login");
+        }
+        else{
+            history.replace("/home/user/posts/create-post")
         }
     }
 
     return (
         <div className="create-post-navbar">
             <div className="sub-main">
-                <Link to="home/user/posts/create-post">
+                {/* <Link to="home/user/posts/create-post"> */}
                     <button className="create-post-btn" onClick={goToPostPage}>Đăng tin</button>
-                </Link>
+                {/* </Link> */}
             </div>
         </div>
     )
