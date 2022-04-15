@@ -54,7 +54,7 @@ const addPostRequest=(postState, imageRequest, videoRequest)=>{
                         }
                         dispatch(alertAction.success(alertData));
                         return (dispatch({
-                            type: postConstant.ADD_PRODUCT,
+                            type: postConstant.ADD_POST,
                             post:response.data
                         }))
                     })
@@ -68,7 +68,6 @@ const getAllPosts=()=>{
     return (dispatch)=>{
         return postService.getAll()
                 .then((response)=>{
-                    console.log(response.data);
                     return (dispatch({
                         type: postConstant.GET_POSTS,
                         page:response.data
@@ -78,7 +77,37 @@ const getAllPosts=()=>{
     }
 }
 
+const getRejectPosts=()=>{
+    return (dispatch)=>{
+        return postService.getRejectPosts()
+                .then((response)=>{
+                    
+                    return (dispatch({
+                        type: postConstant.GET_REJECT_POSTS,
+                        page:response.data
+                    }))
+                })
+                .catch()
+    }
+}
+
+const getWaitingPosts=()=>{
+    return (dispatch)=>{
+        return postService.getWaitingPosts()
+                .then((response)=>{
+                    console.log(response.data);
+                    return (dispatch({
+                        type: postConstant.GET_WAITING_POSTS,
+                        page:response.data
+                    }))
+                })
+                .catch()
+    }
+}
+
 export const postAction={
     addPostRequest,
-    getAllPosts
+    getAllPosts,
+    getRejectPosts,
+    getWaitingPosts
 }

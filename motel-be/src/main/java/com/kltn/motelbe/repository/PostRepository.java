@@ -12,7 +12,17 @@ import com.kltn.motelbe.entity.Post;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long>{
 	@Query(
-			"SELECT p FROM Post p WHERE p.user.username=:username and p.approved=true"
+			"SELECT p FROM Post p WHERE p.user.username=:username and p.approved=true and p.reject=false"
 	)
 	Page<Post> getPostsOfUser(Pageable pageable, @Param("username") String username);
+	
+	@Query(
+			"SELECT p FROM Post p WHERE p.user.username=:username and p.reject=true"
+	)
+	Page<Post> getPostsRejectOfUser(Pageable pageable, @Param("username") String username);
+	
+	@Query(
+			"SELECT p FROM Post p WHERE p.user.username=:username and p.approved=false and p.reject=false"
+	)
+	Page<Post> getPostsWaitingOfUser(Pageable pageable, @Param("username") String username);
 }

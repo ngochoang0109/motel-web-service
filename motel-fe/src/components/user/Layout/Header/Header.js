@@ -42,7 +42,7 @@ const Header = () => {
             </div>
             <ul className="nav-links">
                 <li><Link to="/"><i className="fas fa-solid fa-landmark"></i> Trang chủ</Link></li>
-                <li><Link to="/home/user/posts/list-posts"><i className="fas fa-solid fa-users"></i> Quản lý tin</Link></li>
+                <li><Link to="/home/user/posts"><i className="fas fa-solid fa-users"></i> Quản lý tin</Link></li>
                 <li><a href="/#"><i className="fas fa-solid fa-bookmark"></i> Tin đã lưu</a></li>
                 <li><a href="/#"><i className="fas fa-solid fa-cart-arrow-down"></i> Đơn hàng đã cọc</a></li>
                 <li><a href="/#"><i className="fas fa-solid fa-bell"></i> Thông báo</a></li>

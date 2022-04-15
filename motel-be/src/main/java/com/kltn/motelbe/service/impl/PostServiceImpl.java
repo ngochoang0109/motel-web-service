@@ -73,6 +73,7 @@ public class PostServiceImpl implements PostService {
 		post.setCreateAt(new Date());
 		post.setApproved(false);
 		post.setEnabled(false);
+		post.setReject(false);
 
 		accommodation.setPost(post);
 		post.setAccommodation(accommodation);
@@ -107,6 +108,24 @@ public class PostServiceImpl implements PostService {
 	public Paging<PostResponse> getPostsOfUser(int pageNo, int pageSize, String field, String username) {
 		Pageable pageable= PageAndSortUtils.getPageable(pageNo, pageSize, field);
 		Page<Post> posts= postRepository.getPostsOfUser(pageable, username);
+		Paging<PostResponse> paging= new Paging<>(postMapper.mapPostsToPostResponses(posts.getContent()), posts.getNumber(), posts.getSize(), posts.getTotalElements(), 
+													posts.getTotalPages(), posts.isLast(), posts.isFirst());
+		return paging;
+	}
+	
+	@Override
+	public Paging<PostResponse> getPostsRejectOfUser(int pageNo, int pageSize, String field, String username) {
+		Pageable pageable= PageAndSortUtils.getPageable(pageNo, pageSize, field);
+		Page<Post> posts= postRepository.getPostsRejectOfUser(pageable, username);
+		Paging<PostResponse> paging= new Paging<>(postMapper.mapPostsToPostResponses(posts.getContent()), posts.getNumber(), posts.getSize(), posts.getTotalElements(), 
+													posts.getTotalPages(), posts.isLast(), posts.isFirst());
+		return paging;
+	}
+	
+	@Override
+	public Paging<PostResponse> getPostsWaitingOfUser(int pageNo, int pageSize, String field, String username) {
+		Pageable pageable= PageAndSortUtils.getPageable(pageNo, pageSize, field);
+		Page<Post> posts= postRepository.getPostsWaitingOfUser(pageable, username);
 		Paging<PostResponse> paging= new Paging<>(postMapper.mapPostsToPostResponses(posts.getContent()), posts.getNumber(), posts.getSize(), posts.getTotalElements(), 
 													posts.getTotalPages(), posts.isLast(), posts.isFirst());
 		return paging;

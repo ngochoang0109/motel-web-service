@@ -1,9 +1,6 @@
 import { authHeader } from "../helper/authHeader";
 import callAPI from "../utils/callAPI"
 
-
-
-
 const createPost = (post, images, videos) => {
     const headers = authHeader();
     let formData = new FormData();
@@ -27,8 +24,20 @@ const getAll=()=>{
     return callAPI(headers,"posts","GET");
 }
 
+const getRejectPosts=()=>{
+    const headers = authHeader();
+    return callAPI(headers,"posts/reject","GET");
+}
+
+const getWaitingPosts=()=>{
+    const headers= authHeader();
+    return callAPI(headers,"posts/wait-ing","GET");
+}
+
 
 export const postService = {
     createPost, 
-    getAll
+    getAll,
+    getRejectPosts,
+    getWaitingPosts
 } 

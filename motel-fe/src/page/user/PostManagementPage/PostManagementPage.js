@@ -5,6 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { Route } from "react-router-dom";
 import MenuBar from "../../../components/user/Layout/Main/MenuBar/MenuBar";
 import Posts from "../../../components/user/Layout/Main/Posts/Posts";
+import { Redirect } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
+import { useRouteMatch } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const PostManagementPage = () => {
     // const alertStatus = useSelector(state => state.alertReducer);
@@ -24,17 +28,15 @@ const PostManagementPage = () => {
     //         })
     //     };
     // },[alertStatus])
-
+    const { url, path } = useRouteMatch();
     return (
-        <>
-            <div className="content">
-                <Route path="/home/user/posts/list-posts" exact>
-                    <MenuBar></MenuBar>
-                    <Posts></Posts>
-                </Route>
-
-            </div>
-        </>
+        <div className="content">
+            <Redirect to="/home/user/posts/show-ing"></Redirect>
+            <Route path={`${path}/:name`} exact>
+                <MenuBar url={url}></MenuBar>
+                <Posts ></Posts>
+            </Route>
+        </div>
     )
 }
 

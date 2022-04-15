@@ -4,10 +4,12 @@ import { Route } from "react-router-dom";
 
 
 
-const PrivateRoute = ({ authenticated,path,componentLoggedIn: Component}) => (
-  <Route
-    path={path}
-    render={props=>authenticated ? (<Component/>) : (<Redirect to="/login"></Redirect>)}></Route>
-);
+const PrivateRoute = ({ authenticated, path, componentLoggedIn: Component }) => {
+  return (
+      <Route path={path}>
+        {authenticated ? (<Component />) : (<Redirect to="/login"></Redirect>)}
+      </Route>
+  )
+};
 
-export default PrivateRoute
+export default PrivateRoute;

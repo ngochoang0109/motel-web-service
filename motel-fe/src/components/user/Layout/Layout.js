@@ -7,7 +7,6 @@ import PrivateRoute from "./../../../common/PrivateRoute";
 import { Fragment } from "react";
 import PostManagementPage from "../../../page/user/PostManagementPage/PostManagementPage";
 import Hierarchical from "./Main/Hierarchical/Hierarchical";
-import { Switch } from "react-router-dom";
 
 const Layout = (props) => {
     return (
@@ -15,16 +14,14 @@ const Layout = (props) => {
             <NavBar></NavBar>
             <Main>
                 <Hierarchical></Hierarchical>
-                <Switch>
-                    <Route path="/home" exact>
-                        <h1>This is home page</h1>
-                    </Route>
-                    <PrivateRoute authenticated={props.authenticated}
-                        path="/home/user/posts/list-posts" componentLoggedIn={PostManagementPage}></PrivateRoute>
-                    <PrivateRoute authenticated={props.authenticated}
-                        path="/home/user/posts/create-post" componentLoggedIn={PostPage}></PrivateRoute>
-                </Switch>
-
+                <Route path="/home" exact>
+                    <h1>This is home page</h1>
+                </Route>
+                <PrivateRoute authenticated={props.authenticated}
+                    path="/home/user/posts" componentLoggedIn={PostManagementPage}>
+                </PrivateRoute>
+                <PrivateRoute authenticated={props.authenticated}
+                    path="/home/user/post/create-post" componentLoggedIn={PostPage}></PrivateRoute>
             </Main>
             <Footer></Footer>
         </Fragment>

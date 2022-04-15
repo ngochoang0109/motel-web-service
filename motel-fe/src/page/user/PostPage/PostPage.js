@@ -195,12 +195,13 @@ const PostPage = () => {
         event.preventDefault();
         dispatch(postAction.addPostRequest(post,previewImage,video));
         if(alertStatus){
-            history.replace("/home/user/posts/list-posts");
+            history.replace("/home/user/posts/wait-approve");
         }
        
     }
     return (
         <>
+        {console.log("C-P render")}
             <div className="content">
                 <div className="title">
                     <h1>Đăng tin mới</h1>

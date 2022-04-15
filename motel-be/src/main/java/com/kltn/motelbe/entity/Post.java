@@ -40,7 +40,12 @@ public class Post {
 	@Lob
 	private String content;
 	
+	// (reject = 1 and approve = 1) or (reject = 1 and approve = 0) => is reject
+	// reject = 0 and approved = 1 => showing
+	// reject = 0 and approved = 0 => wait-post(hidden post)
 	private boolean approved;
+	
+	private boolean reject;
 	
 	@Column(name = "last_update")
 	private Date lastUpdate;
@@ -55,6 +60,10 @@ public class Post {
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
+	
+//	@ManyToOne
+//	@JoinColumn(name = "type")
+//	private TypePost typePost;
 	
 	@OneToOne(mappedBy = "post",cascade=CascadeType.ALL)
 	private Accommodation accommodation;

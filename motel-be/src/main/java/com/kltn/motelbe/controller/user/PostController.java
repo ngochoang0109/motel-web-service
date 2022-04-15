@@ -32,10 +32,6 @@ public class PostController {
 	private PostService postService;
 	
 	
-	@Autowired
-	private ImageService imageService;
-	
-	
 	@PostMapping
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<PostResponse> createPoll(@RequestPart("post") PostRequest postRequest,
@@ -54,6 +50,28 @@ public class PostController {
 			@RequestParam(value = "sort", defaultValue = PageAndSortConstant.SORT, required = false) String field,
 			Authentication authentication){
 		Paging<PostResponse> posts= postService.getPostsOfUser(pageNo, pageSize, field, authentication.getName());
+		return new ResponseEntity<Paging<PostResponse>>(posts, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/reject")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<Paging<PostResponse>> getPostsRejectOfUser(
+			@RequestParam(value = "pageNo", defaultValue = PageAndSortConstant.PAGE_NO, required = false) int pageNo, 
+			@RequestParam(value = "pageSize", defaultValue = PageAndSortConstant.PAGE_SIZE, required = false) int pageSize,
+			@RequestParam(value = "sort", defaultValue = PageAndSortConstant.SORT, required = false) String field,
+			Authentication authentication){
+		Paging<PostResponse> posts= postService.getPostsRejectOfUser(pageNo, pageSize, field, authentication.getName());
+		return new ResponseEntity<Paging<PostResponse>>(posts, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/wait-ing")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<Paging<PostResponse>> getPostsWaitingOfUser(
+			@RequestParam(value = "pageNo", defaultValue = PageAndSortConstant.PAGE_NO, required = false) int pageNo, 
+			@RequestParam(value = "pageSize", defaultValue = PageAndSortConstant.PAGE_SIZE, required = false) int pageSize,
+			@RequestParam(value = "sort", defaultValue = PageAndSortConstant.SORT, required = false) String field,
+			Authentication authentication){
+		Paging<PostResponse> posts= postService.getPostsWaitingOfUser(pageNo, pageSize, field, authentication.getName());
 		return new ResponseEntity<Paging<PostResponse>>(posts, HttpStatus.OK);
 	}
 	

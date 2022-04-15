@@ -1,5 +1,6 @@
 import postConstant from "../constants/postConstant";
 
+
 const initialState = {
     content: [],
     pageNo: 0,
@@ -10,9 +11,9 @@ const initialState = {
     first: false,
 };
 
-const postsReducer = (state = initialState, action) => {
+const waitingPostsReducer = (state = initialState, action) => {
     switch (action.type) {
-        case postConstant.GET_POSTS:
+        case postConstant.GET_WAITING_POSTS:
             return {
                 content: action.page.content,
                 pageNo: action.page.pageNo,
@@ -22,10 +23,14 @@ const postsReducer = (state = initialState, action) => {
                 last: action.page.last,
                 first: action.page.first
             }
-        
+        case postConstant.ADD_POST:
+            return {
+                ...state,
+                content: [...state.content, action.post]
+            }
         default:
             return state;
     }
 }
 
-export default postsReducer;
+export default waitingPostsReducer;

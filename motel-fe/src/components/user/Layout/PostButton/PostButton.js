@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import './PostButton.css';
 
 const PostButton = () => {
@@ -12,7 +12,7 @@ const PostButton = () => {
             history.replace("/login");
         }
         else{
-            history.replace("/home/user/posts/create-post")
+            history.replace("/home/user/post/create-post");
         }
     }
 
