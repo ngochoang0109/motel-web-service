@@ -64,6 +64,17 @@ public class PostController {
 		return new ResponseEntity<Paging<PostResponse>>(posts, HttpStatus.OK);
 	}
 	
+	@GetMapping(value = "/menu-post")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<Paging<PostResponse>> getPosts(
+			@RequestParam(value = "pageNo", defaultValue = PageAndSortConstant.PAGE_NO, required = false) int pageNo, 
+			@RequestParam(value = "pageSize", defaultValue = PageAndSortConstant.PAGE_SIZE, required = false) int pageSize,
+			@RequestParam(value = "sort", defaultValue = PageAndSortConstant.SORT, required = false) String field,
+			Authentication authentication){
+		Paging<PostResponse> posts= postService.getPosts(pageNo, pageSize, field);
+		return new ResponseEntity<Paging<PostResponse>>(posts, HttpStatus.OK);
+	}
+	
 	@GetMapping(value = "/wait-ing")
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<Paging<PostResponse>> getPostsWaitingOfUser(
@@ -74,5 +85,4 @@ public class PostController {
 		Paging<PostResponse> posts= postService.getPostsWaitingOfUser(pageNo, pageSize, field, authentication.getName());
 		return new ResponseEntity<Paging<PostResponse>>(posts, HttpStatus.OK);
 	}
-	
 }

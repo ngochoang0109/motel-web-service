@@ -130,4 +130,13 @@ public class PostServiceImpl implements PostService {
 													posts.getTotalPages(), posts.isLast(), posts.isFirst());
 		return paging;
 	}
+	
+	@Override
+	public Paging<PostResponse> getPosts(int pageNo, int pageSize, String field) {
+		Pageable pageable= PageAndSortUtils.getPageable(pageNo, pageSize, field);
+		Page<Post> posts= postRepository.findAll(pageable);
+		Paging<PostResponse> paging= new Paging<>(postMapper.mapPostsToPostResponses(posts.getContent()), posts.getNumber(), posts.getSize(), posts.getTotalElements(), 
+				posts.getTotalPages(), posts.isLast(), posts.isFirst());
+		return paging;
+	}
 }

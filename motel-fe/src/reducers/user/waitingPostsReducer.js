@@ -1,4 +1,4 @@
-import postConstant from "../constants/postConstant";
+import postConstant from "../../constants/postConstant";
 
 
 const initialState = {
@@ -11,9 +11,9 @@ const initialState = {
     first: false,
 };
 
-const rejectPostsReducer = (state = initialState, action) => {
+const waitingPostsReducer = (state = initialState, action) => {
     switch (action.type) {
-        case postConstant.GET_REJECT_POSTS:
+        case postConstant.GET_WAITING_POSTS:
             return {
                 content: action.page.content,
                 pageNo: action.page.pageNo,
@@ -23,9 +23,14 @@ const rejectPostsReducer = (state = initialState, action) => {
                 last: action.page.last,
                 first: action.page.first
             }
+        case postConstant.ADD_POST:
+            return {
+                ...state,
+                content: [...state.content, action.post]
+            }
         default:
             return state;
     }
 }
 
-export default rejectPostsReducer;
+export default waitingPostsReducer;

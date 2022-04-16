@@ -1,0 +1,25 @@
+/* SEARCH FILTER */
+.search-container {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 2rem;
+}
+
+.search-container * {
+    color: black;
+}
+
+.search-container div {
+    color: black;
+    border: 2px solid hsla(0, 0%, 61%, .7);
+    border-radius: 5px;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+    text-align: center;
+    margin-right: 1rem;
+    width: 20%;
+}
+
+.search-container div:last-child {
+    margin-right: 0rem;
+}

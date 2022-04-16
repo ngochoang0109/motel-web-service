@@ -16,4 +16,5 @@ public interface PostService {
 	Paging<PostResponse> getPostsOfUser(int pageNo, int pageSize, String field, String username);
 	Paging<PostResponse> getPostsRejectOfUser(int pageNo, int pageSize, String field, String username);
 	Paging<PostResponse> getPostsWaitingOfUser(int pageNo, int pageSize, String field, String username);
+	Paging<PostResponse> getPosts(int pageNo, int pageSize, String field);
 }

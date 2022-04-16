@@ -7,6 +7,7 @@ import PrivateRoute from "./../../../common/PrivateRoute";
 import { Fragment } from "react";
 import PostManagementPage from "../../../page/user/PostManagementPage/PostManagementPage";
 import Hierarchical from "./Main/Hierarchical/Hierarchical";
+import HomePage from "../../../page/user/HomePage/HomePage";
 
 const Layout = (props) => {
     return (
@@ -15,7 +16,7 @@ const Layout = (props) => {
             <Main>
                 <Hierarchical></Hierarchical>
                 <Route path="/home" exact>
-                    <h1>This is home page</h1>
+                    <HomePage></HomePage>
                 </Route>
                 <PrivateRoute authenticated={props.authenticated}
                     path="/home/user/posts" componentLoggedIn={PostManagementPage}>
