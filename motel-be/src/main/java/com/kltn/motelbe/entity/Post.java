@@ -67,5 +67,6 @@ public class Post {
 	
 	@OneToOne(mappedBy = "post",cascade=CascadeType.ALL)
 	private Accommodation accommodation;
+
 }
 

@@ -34,10 +34,16 @@ const getWaitingPosts=()=>{
     return callAPI(headers,"posts/wait-ing","GET");
 }
 
+const getPosts=()=>{
+    const headers=authHeader();
+    return callAPI(headers,"auth/posts/menu-post?pageNo=0&pageSize=10&sort=createAt","GET");
+}
+
 
 export const postService = {
     createPost, 
     getAll,
     getRejectPosts,
-    getWaitingPosts
+    getWaitingPosts,
+    getPosts
 } 

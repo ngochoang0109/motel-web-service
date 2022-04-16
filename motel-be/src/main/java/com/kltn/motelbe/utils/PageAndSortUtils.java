@@ -6,7 +6,7 @@ import org.springframework.data.domain.Sort;
 
 public class PageAndSortUtils {
 	public static Pageable getPageable(int pageNo, int pageSize, String field) {
-		Pageable paging=PageRequest.of(pageNo, pageSize, Sort.by(field));
+		Pageable paging=PageRequest.of(pageNo, pageSize, Sort.by(field).descending());
 		return paging;
 	}
 }

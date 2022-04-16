@@ -15,13 +15,9 @@ const Posts = () => {
     const auth = useSelector(state => state.authReducer.loggedIn);
     useEffect(() => {
         if (auth) {
-
             dispatch(postAction.getAllPosts());
-
             dispatch(postAction.getRejectPosts());
-
             dispatch(postAction.getWaitingPosts());
-
         }
     }, []);
 

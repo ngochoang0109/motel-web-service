@@ -25,4 +25,9 @@ public interface PostRepository extends JpaRepository<Post, Long>{
 			"SELECT p FROM Post p WHERE p.user.username=:username and p.approved=false and p.reject=false"
 	)
 	Page<Post> getPostsWaitingOfUser(Pageable pageable, @Param("username") String username);
+	
+	@Query(
+			"SELECT p FROM Post p WHERE p.approved=true and p.reject=false"
+	)
+	Page<Post> getPosts(Pageable pageable);
 }

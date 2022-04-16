@@ -13,7 +13,7 @@ const appReducer = combineReducers({
     postsReducer,
     rejectPostsReducer,
     waitingPostsReducer,
-    // menuPostReducer
+    menuPostReducer
 })
 
 const rootReducer = (state, action) => {

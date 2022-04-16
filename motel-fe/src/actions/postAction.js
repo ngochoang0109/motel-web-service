@@ -95,9 +95,21 @@ const getWaitingPosts=()=>{
     return (dispatch)=>{
         return postService.getWaitingPosts()
                 .then((response)=>{
-                    console.log(response.data);
                     return (dispatch({
                         type: postConstant.GET_WAITING_POSTS,
+                        page:response.data
+                    }))
+                })
+                .catch()
+    }
+}
+
+const getPostsShowing=()=>{
+    return (dispatch)=>{
+        return postService.getPosts()
+                .then((response)=>{
+                    return (dispatch({
+                        type: postConstant.GET_SHOWING_POSTS,
                         page:response.data
                     }))
                 })
@@ -109,5 +121,6 @@ export const postAction={
     addPostRequest,
     getAllPosts,
     getRejectPosts,
-    getWaitingPosts
+    getWaitingPosts,
+    getPostsShowing
 }
