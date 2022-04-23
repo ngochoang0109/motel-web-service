@@ -17,12 +17,26 @@ const addPostRequest=(postState, imageRequest, videoRequest)=>{
     const address=`${postState.streetAndNumOfHouse}/${ward.name}/${district.name}/${province.name}`;
 
     const {acreage,airConditioner,electricPrice,internet,parking,price,waterPrice,deposit}=postState;
+
+    const getType=()=>{
+        switch(postState.type){
+            case postConstant.NHA_NGUYEN_CAN_TYPE:
+                return 1;
+            case postConstant.PHONG_TRO_TYPE:
+                return 2;
+            case postConstant.CAN_HO_TYPE:
+                return 3;
+            default:
+                return 1;
+        }
+    }
     
     const post={
         title,
         brief,
         content, 
-        phone
+        phone,
+        type:getType()
     }
 
     const accommodation={
@@ -117,10 +131,46 @@ const getPostsShowing=()=>{
     }
 }
 
+const getTypePosts=()=>{
+    return (dispatch)=>{
+        return postService.getTypePosts()
+                .then((response)=>{
+                    return (dispatch({
+                        type: postConstant.GET_TYPE_POSTS,
+                        data:response.data
+                    }))
+                })
+    }
+}
+
+const getPostsBySearchCriteria=(searchCriteria)=>{
+    let url=`auth/posts/search`;
+    let pagingandsorting=`&pageNo=0&pageSize=10&sort=createAt`;
+    searchCriteria.map((item)=>{
+        if(item.status){
+            url=`${url}?${item.type}=${item.data}${pagingandsorting}`
+            return item;
+        }
+        return [];
+    })
+    return (dispatch)=>{
+        return postService.searchPostByCriteria(url)
+                .then((response)=>{
+                    console.log(response.data);
+                    return dispatch({
+                        type:postConstant.GET_SHOWING_POSTS,
+                        page:response.data
+                    })
+                })
+    }
+}
+
 export const postAction={
     addPostRequest,
     getAllPosts,
     getRejectPosts,
     getWaitingPosts,
-    getPostsShowing
+    getPostsShowing,
+    getTypePosts,
+    getPostsBySearchCriteria
 }

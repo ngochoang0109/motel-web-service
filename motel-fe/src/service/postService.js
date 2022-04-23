@@ -40,10 +40,24 @@ const getPosts=()=>{
 }
 
 
+const getTypePosts=()=>{
+    const headers= authHeader();
+    return callAPI(headers,"auth/type-posts","GET");
+}
+
+const searchPostByCriteria=(url)=>{
+    const headers= authHeader();
+    console.log(url);
+    return callAPI(headers,url,"GET");
+}
+
+
 export const postService = {
     createPost, 
     getAll,
     getRejectPosts,
     getWaitingPosts,
-    getPosts
+    getPosts,
+    getTypePosts,
+    searchPostByCriteria
 } 

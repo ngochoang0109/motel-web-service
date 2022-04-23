@@ -3,7 +3,11 @@ const postConstant={
     ADD_POST:"ADD_POST",
     GET_REJECT_POSTS:"GET_REJECT_POSTS",
     GET_WAITING_POSTS:"GET_WAITING_POSTS",
-    GET_SHOWING_POSTS:"GET_SHOWING_POSTS"
+    GET_SHOWING_POSTS:"GET_SHOWING_POSTS",
+    GET_TYPE_POSTS:"GET_TYPE_POSTS",
+    PHONG_TRO_TYPE:"Phòng trọ",
+    NHA_NGUYEN_CAN_TYPE:"Nhà nguyên căn",
+    CAN_HO_TYPE:"Căn hộ"
 }
 
 export default postConstant;

@@ -7,9 +7,11 @@ import { useHistory } from "react-router-dom";
 import './PostPage.css';
 
 const PostPage = () => {
-    const alert= useAlert();
-    const dispatch=useDispatch();
-    const history= useHistory();
+    const alert = useAlert();
+    const dispatch = useDispatch();
+    const history = useHistory();
+
+    const typePosts = useSelector(state => state.typePostsReducer);
     const [provinceName, setProvinceName] = useState({
         namePro: ""
     });
@@ -19,36 +21,37 @@ const PostPage = () => {
     const [wardName, setWardName] = useState({
         nameWard: ""
     });
-    const [previewImage,setPreviewImage]=useState({
+    const [previewImage, setPreviewImage] = useState({
         previewImages: [],
-        images:[]
+        images: []
     })
 
-    const [video,setVideo]=useState({
-        videoUpload:[],
-        videos:[]
+    const [video, setVideo] = useState({
+        videoUpload: [],
+        videos: []
     });
 
-    const [inputDisable, setInputDisable]=useState(true);
+    const [inputDisable, setInputDisable] = useState(true);
 
     const [post, setPost] = useState({
         provinceCode: "",
         districtCode: "",
         wardCode: "",
-        streetAndNumOfHouse:"",
-        xyCoordinate:"",
-        title:"",
-        brief:"",
-        content:"",
-        phone:"",
-        acreage:"",
-        price:0,
-        deposit:0,
-        electricPrice:0,
-        waterPrice:0,
-        internet:false,
-        parking:false,
-        airConditioner:false
+        streetAndNumOfHouse: "",
+        xyCoordinate: "",
+        title: "",
+        brief: "",
+        content: "",
+        phone: "",
+        acreage: "",
+        price: 0,
+        deposit: 0,
+        electricPrice: 0,
+        waterPrice: 0,
+        internet: false,
+        parking: false,
+        airConditioner: false,
+        type: ""
     });
 
     const showProvinces = () => {
@@ -60,21 +63,21 @@ const PostPage = () => {
 
     const onChangeHandler = (event) => {
         const name = event.target.name;
-        const value= event.target.value;
+        const value = event.target.value;
         const isChecked = event.target.checked;
-        if(name==='price' && parseFloat(value)!==0){
+        if (name === 'price' && parseFloat(value) !== 0) {
             setInputDisable(false);
         }
-        if(name==='deposit' && value!=="" && parseFloat(post.price)!==0){
-            if(!checkDepositLessThanPrice(parseFloat(value),parseFloat(post.price))){
+        if (name === 'deposit' && value !== "" && parseFloat(post.price) !== 0) {
+            if (!checkDepositLessThanPrice(parseFloat(value), parseFloat(post.price))) {
                 alert.show('Tiền cọc nhỏ hơn tiền cho thuê', {
                     timeout: 2500,
                     type: 'info',
-                    onClose:()=>{
+                    onClose: () => {
                         return;
                     }
                 });
-            }else{
+            } else {
                 setPost((prePost) => {
                     return {
                         ...prePost,
@@ -82,15 +85,15 @@ const PostPage = () => {
                     }
                 });
             }
-        }else{
-            if(name!=='internet'&& name!=='parking' && name!=='airConditioner'){
+        } else {
+            if (name !== 'internet' && name !== 'parking' && name !== 'airConditioner') {
                 setPost((prePost) => {
                     return {
                         ...prePost,
                         [name]: value
                     }
                 });
-            }else{
+            } else {
                 setPost((prePost) => {
                     return {
                         ...prePost,
@@ -98,9 +101,14 @@ const PostPage = () => {
                     }
                 });
             }
-            
-        };  
+
+        };
     }
+    useEffect(() => {
+        if (typePosts.length === 0) {
+            dispatch(postAction.getTypePosts());
+        }
+    })
 
     useEffect(() => {
         if (post.provinceCode !== "") {
@@ -109,104 +117,131 @@ const PostPage = () => {
                 ...provinceName,
                 namePro: province.name
             });
-            
+
         }
-        if(post.districtCode !== ""){
-            const district= provinceAPI.getDistrictByCode(post.districtCode);
+        if (post.districtCode !== "") {
+            const district = provinceAPI.getDistrictByCode(post.districtCode);
             setDistrictName({
                 ...districtName,
-                nameDis:district.name
+                nameDis: district.name
             })
         }
-        if(post.wardCode !== ""){
-            const ward= provinceAPI.getWardByCode(post.wardCode);
+        if (post.wardCode !== "") {
+            const ward = provinceAPI.getWardByCode(post.wardCode);
             setWardName({
                 ...wardName,
-                nameWard:ward.name
+                nameWard: ward.name
             })
         }
-    }, [post.provinceCode, post.districtCode,post.wardCode])
+    }, [post.provinceCode, post.districtCode, post.wardCode])
 
     const showDistrictsByProvinceCode = () => {
-        const districts = provinceAPI.getDistrictsByProvinceCode(post.provinceCode);
-        return districts.map((value, index) => {
-            return <option key={index} value={value.code}>{value.name}</option>
+        if (post.provinceCode !== "") {
+            const districts = provinceAPI.getDistrictsByProvinceCode(post.provinceCode);
+            return districts.map((value, index) => {
+                return <option key={index} value={value.code}>{value.name}</option>
+            })
+        }
+    }
+
+    const showTypePosts = () => {
+        return typePosts.map((value, index) => {
+            return <option key={value.shortName} value={value.fullName}>{value.fullName}</option>
         })
     }
 
-    const showWardsByDistrictCode=()=>{
-        const wards= provinceAPI.getWardsByDistrictCode(post.districtCode);
-        return wards.map((value, index) => {
-            return <option key={index} value={value.code}>{value.name}</option>
-        })
+    const showWardsByDistrictCode = () => {
+        if (post.districtCode !== "") {
+            const wards = provinceAPI.getWardsByDistrictCode(post.districtCode);
+            return wards.map((value, index) => {
+                return <option key={index} value={value.code}>{value.name}</option>
+            })
+        }
     }
-    const onChangePicture=(event)=>{
-        const file=event.target.files[0];
-        const preImg=previewImage.previewImages;
-        const images=previewImage.images;
+    const onChangePicture = (event) => {
+        const file = event.target.files[0];
+        const preImg = previewImage.previewImages;
+        const images = previewImage.images;
         images.push(file);
         preImg.push(URL.createObjectURL(file));
-        if(preImg.length>5){
+        if (preImg.length > 5) {
             alert.show('Tối đa upload 5 hình ảnh', {
-                    timeout: 2500,
-                    type: 'info'
-                })
-        }else{
-            setPreviewImage((previousPreviewImage)=>{
-                return{
+                timeout: 2500,
+                type: 'info'
+            })
+        } else {
+            setPreviewImage((previousPreviewImage) => {
+                return {
                     ...previousPreviewImage,
-                    previewImages:preImg,
-                    images:images
+                    previewImages: preImg,
+                    images: images
                 }
             });
         }
     }
 
-    const onChangeVideo=(event)=>{
-        const file=event.target.files[0];
-        const preVideo=video.videoUpload;
-        const videos= video.videos;
+    const onChangeVideo = (event) => {
+        const file = event.target.files[0];
+        const preVideo = video.videoUpload;
+        const videos = video.videos;
         videos.push(file);
         preVideo.push(URL.createObjectURL(file));
-        if(preVideo.length>3){
+        if (preVideo.length > 3) {
             alert.show('Tối đa upload 3 video', {
-                    timeout: 2500,
-                    type: 'info'
-                })
-        }else{
-            setVideo((previousVideo)=>{
-                return{
+                timeout: 2500,
+                type: 'info'
+            })
+        } else {
+            setVideo((previousVideo) => {
+                return {
                     ...previousVideo,
-                    videoUpload:preVideo,
-                    videos:videos
+                    videoUpload: preVideo,
+                    videos: videos
                 }
             });
         }
     }
 
-    const checkDepositLessThanPrice=(deposit, price)=>{
-        if(deposit<=price){
+    const checkDepositLessThanPrice = (deposit, price) => {
+        if (deposit <= price) {
             return true;
         }
         return false;
     }
     const alertStatus = useSelector(state => state.alertReducer);
-    const onSubmitHandler=(event)=>{
+    const onSubmitHandler = (event) => {
         event.preventDefault();
-        dispatch(postAction.addPostRequest(post,previewImage,video));
-        if(alertStatus){
+        dispatch(postAction.addPostRequest(post, previewImage, video));
+        if (alertStatus) {
             history.replace("/home/user/posts/wait-approve");
         }
-       
+
     }
+
     return (
         <>
-        {console.log("C-P render")}
             <div className="content">
                 <div className="title">
                     <h1>Đăng tin mới</h1>
                 </div>
                 <form action="" className="post-form" onSubmit={onSubmitHandler}>
+                    <div className="select-address">
+                        <h3>
+                            Danh mục tin đăng
+                        </h3>
+                    </div>
+                    <div className="select-address-box">
+                        <div className="select-box">
+                            <label htmlFor="type" className="label select-box1">
+                                <span className="label-desc">{post.type === "" ? `Chọn danh mục` : post.type}</span>
+                            </label>
+                            <select id="type" className="select" onChange={onChangeHandler} name="type">
+                                <option disabled={true}>Chọn danh mục</option>
+                                {showTypePosts()}
+                            </select>
+
+                        </div>
+                    </div>
                     <div className="select-address">
                         <h3>
                             Địa chỉ cho thuê
@@ -218,34 +253,37 @@ const PostPage = () => {
                                 <span className="label-desc">{provinceName.namePro === "" ? `Chọn tỉnh/ thành phố` : provinceName.namePro}</span>
                             </label>
                             <select id="province" className="select" onChange={onChangeHandler} name="provinceCode">
+                                <option disabled={true}>Chọn tỉnh/ thành phố</option>
                                 {showProvinces()}
                             </select>
 
                         </div>
                         <div className="select-box">
                             <label htmlFor="select-box1" className="label select-box1"><span className="label-desc">
-                            {districtName.nameDis === "" ? `Chọn quận/huyện` : districtName.nameDis}</span> </label>
+                                {districtName.nameDis === "" ? `Chọn quận/huyện` : districtName.nameDis}</span> </label>
                             <select id="select-box1" className="select" name="districtCode" onChange={onChangeHandler}>
+                                <option disabled={true}>Chọn quận/huyện</option>
                                 {showDistrictsByProvinceCode()}
                             </select>
 
                         </div>
                         <div className="select-box">
                             <label htmlFor="select-box1" className="label select-box1"><span className="label-desc">
-                            {wardName.nameWard === "" ? `Chọn phường/xã` : wardName.nameWard}</span> </label>
+                                {wardName.nameWard === "" ? `Chọn phường/xã` : wardName.nameWard}</span> </label>
                             <select id="select-box1" className="select" name='wardCode' onChange={onChangeHandler}>
+                                <option disabled={true}>Chọn phường/xã</option>
                                 {showWardsByDistrictCode()}
                             </select>
                         </div>
                     </div>
 
                     <div className="input-address">
-                        <input type="text" placeholder="Nhập đường - số nhà" 
-                                onChange={onChangeHandler} 
-                                name="streetAndNumOfHouse"></input>
-                        <input type="text" placeholder="Nhập tọa độ X,Y nếu cần thiết" 
-                                name="xyCoordinate"
-                                onChange={onChangeHandler}></input>
+                        <input type="text" placeholder="Nhập đường - số nhà"
+                            onChange={onChangeHandler}
+                            name="streetAndNumOfHouse"></input>
+                        <input type="text" placeholder="Nhập tọa độ X,Y nếu cần thiết"
+                            name="xyCoordinate"
+                            onChange={onChangeHandler}></input>
                     </div>
                     <div className="infor-desc">
                         <h3>Thông tin mô tả</h3>
@@ -254,46 +292,46 @@ const PostPage = () => {
                             <input type="text" placeholder="Tiêu đề bài viết" name='title' onChange={onChangeHandler}></input>
                             <label> Tóm tắt ngắn gọn</label>
                             <input type="text" placeholder="Tóm tắt bài viết" name='brief'
-                                 onChange={onChangeHandler}></input>
+                                onChange={onChangeHandler}></input>
                             <label> Thông tin chi tiết</label>
                             <textarea name='content'
-                                        onChange={onChangeHandler}
-                                        placeholder="Mô tả chi tiết thông tin phòng cho thuê, nên viết tiếng Việt có dấu."></textarea>
+                                onChange={onChangeHandler}
+                                placeholder="Mô tả chi tiết thông tin phòng cho thuê, nên viết tiếng Việt có dấu."></textarea>
                         </div>
                         <div className="accomodation-infor">
                             <div className="row-first">
                                 <div>
                                     <label> Thông tin liên hệ</label>
                                     <input type="text" name='phone' placeholder="Số điện thoại"
-                                     onChange={onChangeHandler}></input>
+                                        onChange={onChangeHandler}></input>
                                 </div>
                                 <div>
                                     <label> Diện tích</label>
-                                    <input type="number" name='acreage' 
-                                            placeholder="Diện tích phòng trọ đơn vị mét vuông" min="12"
-                                            onChange={onChangeHandler}></input>
+                                    <input type="number" name='acreage'
+                                        placeholder="Diện tích phòng trọ đơn vị mét vuông" min="12"
+                                        onChange={onChangeHandler}></input>
                                 </div>
                                 <div>
                                     <label> Giá điện</label>
-                                    <input type="number" name='electricPrice' placeholder="Đơn vị VNĐ"  onChange={onChangeHandler}></input>
+                                    <input type="number" name='electricPrice' placeholder="Đơn vị VNĐ" onChange={onChangeHandler}></input>
                                 </div>
                                 <div className="form-check">
                                     <div className="checkbox-input">
                                         <label className="form-check-label">Internet free</label>
-                                        <input type="checkbox" 
-                                                name='internet'
-                                                className="form-check-input"
-                                                checked={post.internet} 
-                                                onChange={onChangeHandler}/>
+                                        <input type="checkbox"
+                                            name='internet'
+                                            className="form-check-input"
+                                            checked={post.internet}
+                                            onChange={onChangeHandler} />
                                     </div>
                                     <div className="checkbox-input">
                                         <label className="form-check-label">Chỗ để xe</label>
-                                        <input type="checkbox" name='parking' className="form-check-input" onChange={onChangeHandler}/>
+                                        <input type="checkbox" name='parking' className="form-check-input" onChange={onChangeHandler} />
                                     </div>
 
                                     <div className="checkbox-input">
                                         <label className="form-check-label">Điều hòa</label>
-                                        <input type="checkbox" name='airConditioner' className="form-check-input" onChange={onChangeHandler}/>
+                                        <input type="checkbox" name='airConditioner' className="form-check-input" onChange={onChangeHandler} />
                                     </div>
 
                                 </div>
@@ -302,17 +340,17 @@ const PostPage = () => {
                                 <div>
                                     <label> Giá cho thuê</label>
                                     <input type="number"
-                                            name='price' 
-                                            placeholder="Đơn vị VNĐ"
-                                            onChange={onChangeHandler}></input>
+                                        name='price'
+                                        placeholder="Đơn vị VNĐ"
+                                        onChange={onChangeHandler}></input>
                                 </div>
                                 <div>
                                     <label> Tiền đặt cọc</label>
-                                    <input type="number" 
-                                            name='deposit'
-                                            onChange={onChangeHandler}
-                                            disabled={inputDisable?"disabled":""}
-                                            placeholder="Đơn vị VNĐ. Số tiền đặt cọc nên trên 10% tiền cho thuê"></input>
+                                    <input type="number"
+                                        name='deposit'
+                                        onChange={onChangeHandler}
+                                        disabled={inputDisable ? "disabled" : ""}
+                                        placeholder="Đơn vị VNĐ. Số tiền đặt cọc nên trên 10% tiền cho thuê"></input>
                                 </div>
                                 <div>
                                     <label> Giá nước</label>
@@ -323,11 +361,11 @@ const PostPage = () => {
                         <div className="media-infor">
                             <h3>Hình ảnh</h3>
                             <div className="media">
-                                <input type="file"  multiple accept='image/*' onChange={onChangePicture}></input>
+                                <input type="file" multiple accept='image/*' onChange={onChangePicture}></input>
                                 <p>Kéo hình vào hoặc bấm vào để tải hình ảnh lên. Tối đa 5 hình ảnh.</p>
                                 <div className="preview-image">
-                                    {previewImage.previewImages && previewImage.previewImages.map((value, index)=>{
-                                        return(<img src={value} alt={value+index} key={index}></img>)
+                                    {previewImage.previewImages && previewImage.previewImages.map((value, index) => {
+                                        return (<img src={value} alt={value + index} key={index}></img>)
                                     })}
                                 </div>
                             </div>
@@ -335,7 +373,7 @@ const PostPage = () => {
                         <div className="media-infor-video">
                             <h3>Video</h3>
                             <div className="media">
-                                <input type="file"accept="video/*" onChange={onChangeVideo} multiple></input>
+                                <input type="file" accept="video/*" onChange={onChangeVideo} multiple></input>
                                 <p>Kéo video vào hoặc bấm vào để tải hình video lên. Tối đa 1 video</p>
                             </div>
                         </div>

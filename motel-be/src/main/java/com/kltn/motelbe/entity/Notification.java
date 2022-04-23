@@ -33,10 +33,6 @@ public class Notification {
 	private User user;
 	
 	@ManyToOne
-	@JoinColumn(name = "criteria_id")
-	private Criteria criteria;
-	
-	@ManyToOne
 	@JoinColumn(name = "post_id")
 	private Post post;
 	

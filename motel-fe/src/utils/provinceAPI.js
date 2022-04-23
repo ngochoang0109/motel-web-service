@@ -14,6 +14,9 @@ const getWards=()=>{
 }
 
 const getDistrictsByProvinceCode=(provinceCode)=>{
+    if(!provinceCode){
+        return {};
+    }
     return pcVN.getDistrictsByProvinceCode(provinceCode);
 }
 
@@ -22,6 +25,7 @@ const getWardsByDistrictCode=(districtCode)=>{
 }
 
 const getProvinceByCode=(provinceCode)=>{
+    
     const provinces= pcVN.getProvinces();
     const result=provinces.filter(item=>item.code===provinceCode);
     return result[0];

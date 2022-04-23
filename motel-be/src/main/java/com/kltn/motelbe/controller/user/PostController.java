@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.kltn.motelbe.Paging.Paging;
 import com.kltn.motelbe.constant.PageAndSortConstant;
 import com.kltn.motelbe.dto.ImageDto;
+import com.kltn.motelbe.paging.Paging;
 import com.kltn.motelbe.payload.request.PostRequest;
 import com.kltn.motelbe.payload.response.PostResponse;
 import com.kltn.motelbe.service.ImageService;

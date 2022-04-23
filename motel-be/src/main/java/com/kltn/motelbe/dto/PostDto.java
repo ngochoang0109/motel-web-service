@@ -14,4 +14,5 @@ public class PostDto {
 	private String brief;
 	private String content;
 	private String phone;
+	private long type;
 }

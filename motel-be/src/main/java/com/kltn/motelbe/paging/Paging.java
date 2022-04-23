@@ -1,4 +1,4 @@
-package com.kltn.motelbe.Paging;
+package com.kltn.motelbe.paging;
 
 
 import java.util.List;

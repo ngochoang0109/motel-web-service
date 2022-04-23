@@ -2,7 +2,7 @@
 .alert{
     margin-bottom: 1rem;
 }
-.alert a,p{
+.alert a,.arrow{
     display: inline-block;
     padding: 2px;
     background-color: #A9A9A9;

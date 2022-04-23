@@ -29,8 +29,7 @@ ReactDOM.render(
       </React.StrictMode>
     </Provider>
   </Router>
-  ,
-  document.getElementById('root')
+  , document.getElementById('root')
 );
 
 reportWebVitals();

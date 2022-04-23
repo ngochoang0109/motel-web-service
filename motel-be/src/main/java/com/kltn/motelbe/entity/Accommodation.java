@@ -75,6 +75,4 @@ public class Accommodation {
 	
 	@OneToMany(mappedBy="accommodation",cascade = CascadeType.ALL)
 	private Set<Video> videos = new HashSet<>();
-	
-
 }

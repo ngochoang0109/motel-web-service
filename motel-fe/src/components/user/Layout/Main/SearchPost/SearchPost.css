@@ -18,8 +18,38 @@
     text-align: center;
     margin-right: 1rem;
     width: 20%;
+    cursor: pointer;
 }
 
 .search-container div:last-child {
     margin-right: 0rem;
+}
+
+/* DATA SEARCH */
+
+.itemList{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.itemList li{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-bottom: 1px solid #cacaca;
+    border-top: 1px solid #cacaca;
+    cursor: pointer;
+    height: 45px;
+    position: relative;
+    transition: opacity .5s ease-in;
+}
+
+.itemList li span{
+    margin-right: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.itemList li:hover{
+    background-color: #00B4CC;
 }

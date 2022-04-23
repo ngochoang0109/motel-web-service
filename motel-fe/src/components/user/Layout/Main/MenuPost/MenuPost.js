@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { postAction } from '../../../../../actions/postAction';
 import PostCard from '../PostCard/PostCard';
+
 import './MenuPost.css';
 const MenuPost = () => {
     const dispatch= useDispatch();
