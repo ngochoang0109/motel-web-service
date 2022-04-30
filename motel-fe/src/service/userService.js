@@ -1,5 +1,3 @@
-import axios from "axios";
-import { API_BASE_URL } from "../constants/API";
 import { authHeader } from "../helper/authHeader";
 import callAPI from "../utils/callAPI";
 
@@ -27,9 +25,15 @@ const getTokenUser=()=>{
   return user;
 }
 
+const getCurrentUser=()=>{
+  const headers=authHeader()
+  return callAPI(headers,"users", "GET");
+}
+
 export const userService = {
   loginUser,
   registerUser,
   logout,
-  getTokenUser
+  getTokenUser,
+  getCurrentUser
 }

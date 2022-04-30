@@ -24,5 +24,5 @@ public interface PostService {
 	
 	Paging<PostResponse> getPosts(int pageNo, int pageSize, String field);
 	
-	Paging<PostResponse> getPostsByCriteria(int pageNo, int pageSize, String field, Map<String,String> properties);
+	Paging<PostResponse> getPostsByCriteria(int pageNo, int pageSize, String field, String type, String address);
 }

@@ -26,6 +26,11 @@ const MenuPost = () => {
                     index={index}
                     color={color[i]}></PostCard>
             })
+        }else{
+            return (
+            <div className="title">
+                <h1>Chưa có dữ liệu phù hợp</h1>
+            </div>)
         }
     }
 

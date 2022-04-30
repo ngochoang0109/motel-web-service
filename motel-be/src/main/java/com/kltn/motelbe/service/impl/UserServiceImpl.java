@@ -2,14 +2,18 @@ package com.kltn.motelbe.service.impl;
 
 import java.util.Collections;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.kltn.motelbe.constant.RoleConstant;
+import com.kltn.motelbe.dto.UserDto;
+import com.kltn.motelbe.entity.Post;
 import com.kltn.motelbe.entity.Role;
 import com.kltn.motelbe.entity.User;
 import com.kltn.motelbe.exception.BadRequestException;
+import com.kltn.motelbe.exception.ResourceNotFoundException;
 import com.kltn.motelbe.exception.WebServerException;
 import com.kltn.motelbe.payload.request.SignUpReq;
 import com.kltn.motelbe.repository.RoleRepository;
@@ -27,6 +31,9 @@ public class UserServiceImpl implements UserService{
 
 	@Autowired
 	private RoleRepository roleRepository;
+	
+	@Autowired
+	private ModelMapper modelMapper;
 	
 	@Override
 	public User registerUser(SignUpReq signUpReq) {
@@ -53,5 +60,14 @@ public class UserServiceImpl implements UserService{
 
 		return userRepository.save(user);
 
+	}
+	
+	
+	@Override
+	public UserDto findUserByUsernameOrEmail(String username, String email) {
+		User user= userRepository.findByUsernameOrEmail(username,email)
+				.orElseThrow(() -> new ResourceNotFoundException("user", "username", username));
+		UserDto userDto = modelMapper.map(user, UserDto.class);
+		return userDto;
 	}
 }

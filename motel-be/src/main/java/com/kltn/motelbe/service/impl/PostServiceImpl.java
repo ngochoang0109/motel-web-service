@@ -1,10 +1,7 @@
 package com.kltn.motelbe.service.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 
@@ -150,16 +147,24 @@ public class PostServiceImpl implements PostService {
 	}
 	
 	@Override
-	public Paging<PostResponse> getPostsByCriteria(int pageNo, int pageSize, String field, Map<String,String> properties) {
+	public Paging<PostResponse> getPostsByCriteria(int pageNo, int pageSize, String field , String type, String address) {
 		
 		Pageable pageable= PageAndSortUtils.getPageable(pageNo, pageSize, field);
+		Page<Post> posts= Page.empty();
 		
-		for (Map.Entry<String,String> property : properties.entrySet()){
-			
+		if (type!=null) {
+			if (address!=null) {
+				posts= postRepository.getPostsByProperties(pageable, type, address);
+			}
+			else {
+				posts= postRepository.getPostsByType(pageable, type);
+			}
+		}else {
+			if (address!=null) {
+				posts= postRepository.getPostsContainAddress(pageable,address);
+			}
 		}
 		
-		
-		Page<Post> posts= postRepository.getPostsByProperties(pageable, properties.get("type"), properties.get("address"));
 		Paging<PostResponse> paging= new Paging<>(postMapper.mapPostsToPostResponses(posts.getContent()), 
 				posts.getNumber(), posts.getSize(), posts.getTotalElements(), 
 				posts.getTotalPages(), posts.isLast(), posts.isFirst());

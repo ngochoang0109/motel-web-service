@@ -1,13 +1,6 @@
 package com.kltn.motelbe.dto;
 
-import java.util.List;
-
-import javax.swing.plaf.MenuItemUI;
-
 import org.springframework.web.multipart.MultipartFile;
-
-import com.kltn.motelbe.entity.Image;
-import com.kltn.motelbe.entity.Video;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,14 +16,19 @@ public class AccommodationDto {
 	private double acreage;
 	private String address;
 	private boolean airConditioner;
-	private double electricPrice;
+	private int bedroom;
+	private int floor;
+	private boolean fridge;
+	private boolean furniture;
+	private boolean heater;
 	private boolean internet;
 	private boolean parking;
 	private double price;
-	private double waterPrice;
 	private double deposit;
-	private String xCoordinate;
-	private String yCoordinate;
+	private int toilet;
+	private String tower;
+	private double x;
+	private double y;
 	
 	private MultipartFile[] images;
 	private MultipartFile[] videos;

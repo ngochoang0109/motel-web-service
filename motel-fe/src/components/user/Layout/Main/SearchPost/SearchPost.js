@@ -11,10 +11,8 @@ const SearchPost = () => {
     const typePosts = useSelector(state => state.typePostsReducer);
     const [show, setShow] = useState(false);
     const [name, setName] = useState("");
-    const [province, setProvince] = useState({});
-    const [district, setDistrict] = useState({});
 
-    const [searchManagement, setSearchManagement] = useState([
+    const [searchManagement] = useState([
         {
             type: "filter",
             title: "Lọc kết quả",
@@ -73,6 +71,7 @@ const SearchPost = () => {
                 updateAddress.status = true;
                 updateAddress.data = value;
                 dispatch(postAction.getPostsBySearchCriteria(searchManagement));
+                setShow(false);
                 return;
             default:
                 return searchManagement;
@@ -89,10 +88,10 @@ const SearchPost = () => {
         dispatch(postAction.getTypePosts());
     }, []);
 
-    const showProvinces = (title) => {
-        const provinces = provinceAPI.getAllProvinces();
+    const showDistrictsByProvinceCode = (title) => {
+        const districts = provinceAPI.getDistrictsByProvinceCode(79);
         const content = (<ul className='itemList'>
-            {provinces.map((value, index) => {
+            {districts.map((value, index) => {
                 return <li key={value.code}
                     onClick={() => handlerSearchFields(value.name)}
                     name={searchManagement[1].type}>
@@ -106,21 +105,6 @@ const SearchPost = () => {
             content={content}>
         </Modal>
     }
-
-    // const showDistrictsByProvinceCode = (province) => {
-    //     const districts = provinceAPI.getDistrictsByProvinceCode(province.code);
-    //     // dispatch(searchAction.addCriteriaSearch({
-    //     //     type: "address",
-    //     //     data: province.name,
-    //     //     status: true
-    //     // }));
-    //     return (districts.map((value, index) => {
-    //         //     return <li key={value.code}>
-    //         //         <span>{value.name}</span>
-    //         //         <i className="fas fa-solid fa-arrow-right pd-l"></i>
-    //         //     </li>
-    //     }))
-    // }
 
     const showFilter = () => {
         let title = "";
@@ -136,7 +120,7 @@ const SearchPost = () => {
                 return (showTypePost(title))
             case searchManagement[2].type:
                 title = searchManagement[2].title;
-                return (showProvinces(title))
+                return (showDistrictsByProvinceCode(title))
             case searchManagement[3].type:
                 title = searchManagement[3].title;
                 return (<Modal title={title} onClose={() => setShow(false)} show={show}>
@@ -166,7 +150,7 @@ const SearchPost = () => {
                 </div>
                 <div className="address-search" role="button" onClick={showModalSearch} name={searchManagement[2].type}>
                     <i className="fas fa-solid fa-thumbtack"></i>
-                    <span name={searchManagement[2].type}> Toàn quốc </span>
+                    <span name={searchManagement[2].type}> Quận </span>
                 </div>
                 <div className="price-search" role="button" onClick={showModalSearch} name={searchManagement[3].type}>
                     <i className="fas fa-regular fa-tag"></i>

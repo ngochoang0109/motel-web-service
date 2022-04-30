@@ -10,6 +10,7 @@ import history from './helper/history';
 import { transitions, positions, Provider as AlertProvider } from 'react-alert';
 import AlertTemplate from 'react-alert-template-basic';
 
+
 // optional configuration
 const options = {
   position: positions.TOP_RIGHT,

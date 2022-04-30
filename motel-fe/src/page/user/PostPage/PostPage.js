@@ -4,14 +4,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { postAction } from '../../../actions/postAction';
 import { provinceAPI } from '../../../utils/provinceAPI';
 import { useHistory } from "react-router-dom";
-import './PostPage.css';
+import MapContainer from '../../../components/Map/MapContainer';
+import postConstant from '../../../constants/postConstant';
+import { LocationDefault } from '../../../utils/LocationDefault';
 
+import './PostPage.css';
+import { userService } from '../../../service/userService';
 const PostPage = () => {
     const alert = useAlert();
     const dispatch = useDispatch();
     const history = useHistory();
 
     const typePosts = useSelector(state => state.typePostsReducer);
+
     const [provinceName, setProvinceName] = useState({
         namePro: ""
     });
@@ -21,6 +26,7 @@ const PostPage = () => {
     const [wardName, setWardName] = useState({
         nameWard: ""
     });
+
     const [previewImage, setPreviewImage] = useState({
         previewImages: [],
         images: []
@@ -33,12 +39,15 @@ const PostPage = () => {
 
     const [inputDisable, setInputDisable] = useState(true);
 
+    
+
     const [post, setPost] = useState({
         provinceCode: "",
         districtCode: "",
         wardCode: "",
         streetAndNumOfHouse: "",
-        xyCoordinate: "",
+        xCoordinate: "",
+        yCoordinate: "",
         title: "",
         brief: "",
         content: "",
@@ -46,13 +55,20 @@ const PostPage = () => {
         acreage: "",
         price: 0,
         deposit: 0,
-        electricPrice: 0,
-        waterPrice: 0,
         internet: false,
         parking: false,
         airConditioner: false,
+        heater: false,
+        fridge: false,
+        furniture: false,
+        tower: "",
+        floor: 0,
+        bedroom: 0,
+        toilet: 0,
         type: ""
     });
+
+    const[houseAndStreet, setHouseAndStreet]=useState(post.streetAndNumOfHouse);
 
     const showProvinces = () => {
         const provinces = provinceAPI.getAllProvinces();
@@ -65,6 +81,7 @@ const PostPage = () => {
         const name = event.target.name;
         const value = event.target.value;
         const isChecked = event.target.checked;
+
         if (name === 'price' && parseFloat(value) !== 0) {
             setInputDisable(false);
         }
@@ -86,7 +103,8 @@ const PostPage = () => {
                 });
             }
         } else {
-            if (name !== 'internet' && name !== 'parking' && name !== 'airConditioner') {
+            if (name !== 'internet' && name !== 'parking' && name !== 'airConditioner' &&
+                name !== 'fridge' && name !== 'furniture' && name !== 'heater') {
                 setPost((prePost) => {
                     return {
                         ...prePost,
@@ -104,9 +122,13 @@ const PostPage = () => {
 
         };
     }
+
     useEffect(() => {
         if (typePosts.length === 0) {
             dispatch(postAction.getTypePosts());
+            userService.getCurrentUser().then((response) => {
+                setPost({ ...post, phone: response.data.phone });
+            });
         }
     })
 
@@ -145,7 +167,7 @@ const PostPage = () => {
     }
 
     const showTypePosts = () => {
-        return typePosts.map((value, index) => {
+        return typePosts.map((value) => {
             return <option key={value.shortName} value={value.fullName}>{value.fullName}</option>
         })
     }
@@ -209,6 +231,11 @@ const PostPage = () => {
         return false;
     }
     const alertStatus = useSelector(state => state.alertReducer);
+
+    const handlerLocationSelect = ({ latitude, longitude }) => {
+        setPost({...post,xCoordinate:latitude, yCoordinate:longitude});
+    }
+
     const onSubmitHandler = (event) => {
         event.preventDefault();
         dispatch(postAction.addPostRequest(post, previewImage, video));
@@ -217,7 +244,10 @@ const PostPage = () => {
         }
 
     }
-
+    const onFocusOut=(event)=>{
+        console.log(event.target.value)
+        setHouseAndStreet(event.target.value);
+    }
     return (
         <>
             <div className="content">
@@ -242,148 +272,206 @@ const PostPage = () => {
 
                         </div>
                     </div>
-                    <div className="select-address">
+                    {post.type !== '' ? <><div className="select-address">
                         <h3>
                             Địa chỉ cho thuê
                         </h3>
                     </div>
-                    <div className="select-address-box">
-                        <div className="select-box">
-                            <label htmlFor="province" className="label select-box1">
-                                <span className="label-desc">{provinceName.namePro === "" ? `Chọn tỉnh/ thành phố` : provinceName.namePro}</span>
-                            </label>
-                            <select id="province" className="select" onChange={onChangeHandler} name="provinceCode">
-                                <option disabled={true}>Chọn tỉnh/ thành phố</option>
-                                {showProvinces()}
-                            </select>
+                        <div className="select-address-box">
+                            <div className="select-box">
+                                <label htmlFor="province" className="label select-box1">
+                                    <span className="label-desc">{provinceName.namePro === "" ? `Chọn tỉnh/ thành phố` : provinceName.namePro}</span>
+                                </label>
+                                <select id="province" className="select" onChange={onChangeHandler} name="provinceCode">
+                                    <option disabled={true}>Chọn tỉnh/ thành phố</option>
+                                    {showProvinces()}
+                                </select>
 
-                        </div>
-                        <div className="select-box">
-                            <label htmlFor="select-box1" className="label select-box1"><span className="label-desc">
-                                {districtName.nameDis === "" ? `Chọn quận/huyện` : districtName.nameDis}</span> </label>
-                            <select id="select-box1" className="select" name="districtCode" onChange={onChangeHandler}>
-                                <option disabled={true}>Chọn quận/huyện</option>
-                                {showDistrictsByProvinceCode()}
-                            </select>
+                            </div>
+                            <div className="select-box">
+                                <label htmlFor="select-box1" className="label select-box1"><span className="label-desc">
+                                    {districtName.nameDis === "" ? `Chọn quận/huyện` : districtName.nameDis}</span> </label>
+                                <select id="select-box1" className="select" name="districtCode" onChange={onChangeHandler}>
+                                    <option disabled={true}>Chọn quận/huyện</option>
+                                    {showDistrictsByProvinceCode()}
+                                </select>
 
+                            </div>
+                            <div className="select-box">
+                                <label htmlFor="select-box1" className="label select-box1"><span className="label-desc">
+                                    {wardName.nameWard === "" ? `Chọn phường/xã` : wardName.nameWard}</span> </label>
+                                <select id="select-box1" className="select" name='wardCode' onChange={onChangeHandler}>
+                                    <option disabled={true}>Chọn phường/xã</option>
+                                    {showWardsByDistrictCode()}
+                                </select>
+                            </div>
                         </div>
-                        <div className="select-box">
-                            <label htmlFor="select-box1" className="label select-box1"><span className="label-desc">
-                                {wardName.nameWard === "" ? `Chọn phường/xã` : wardName.nameWard}</span> </label>
-                            <select id="select-box1" className="select" name='wardCode' onChange={onChangeHandler}>
-                                <option disabled={true}>Chọn phường/xã</option>
-                                {showWardsByDistrictCode()}
-                            </select>
-                        </div>
-                    </div>
 
-                    <div className="input-address">
-                        <input type="text" placeholder="Nhập đường - số nhà"
-                            onChange={onChangeHandler}
-                            name="streetAndNumOfHouse"></input>
-                        <input type="text" placeholder="Nhập tọa độ X,Y nếu cần thiết"
-                            name="xyCoordinate"
-                            onChange={onChangeHandler}></input>
-                    </div>
-                    <div className="infor-desc">
-                        <h3>Thông tin mô tả</h3>
-                        <div className="post-infor">
-                            <label> Tiêu đề</label>
-                            <input type="text" placeholder="Tiêu đề bài viết" name='title' onChange={onChangeHandler}></input>
-                            <label> Tóm tắt ngắn gọn</label>
-                            <input type="text" placeholder="Tóm tắt bài viết" name='brief'
-                                onChange={onChangeHandler}></input>
-                            <label> Thông tin chi tiết</label>
-                            <textarea name='content'
+                        <div className='map-block'>
+                            <MapContainer location={LocationDefault}
+                                zoomLevel={14}
+                                handlerLocation={handlerLocationSelect}
+                                address={{provinceName:provinceName.namePro, 
+                                            districtName:districtName.nameDis, 
+                                            wardName:wardName.nameWard,
+                                            houseAndStreet:houseAndStreet}}>
+                            </MapContainer>
+                        </div>
+
+                        <div className="input-address">
+                            <input type="text" placeholder="Nhập đường - số nhà"
                                 onChange={onChangeHandler}
-                                placeholder="Mô tả chi tiết thông tin phòng cho thuê, nên viết tiếng Việt có dấu."></textarea>
+                                onBlur={onFocusOut}
+                                name="streetAndNumOfHouse"></input>
+                            <input type="text" placeholder="Gần với địa chỉ"
+                                style={{ backgroundColor: "#ddd" }}
+                                disabled={true}
+                                name="xyCoordinate"
+                                value={post.xCoordinate!=='' && post.yCoordinate!==''?`${post.xCoordinate.toFixed(8)}-${post.yCoordinate.toFixed(8)}`:''}
+                                onChange={onChangeHandler}></input>
                         </div>
-                        <div className="accomodation-infor">
-                            <div className="row-first">
-                                <div>
-                                    <label> Thông tin liên hệ</label>
-                                    <input type="text" name='phone' placeholder="Số điện thoại"
-                                        onChange={onChangeHandler}></input>
-                                </div>
-                                <div>
-                                    <label> Diện tích</label>
-                                    <input type="number" name='acreage'
-                                        placeholder="Diện tích phòng trọ đơn vị mét vuông" min="12"
-                                        onChange={onChangeHandler}></input>
-                                </div>
-                                <div>
-                                    <label> Giá điện</label>
-                                    <input type="number" name='electricPrice' placeholder="Đơn vị VNĐ" onChange={onChangeHandler}></input>
-                                </div>
-                                <div className="form-check">
-                                    <div className="checkbox-input">
-                                        <label className="form-check-label">Internet free</label>
-                                        <input type="checkbox"
-                                            name='internet'
-                                            className="form-check-input"
-                                            checked={post.internet}
-                                            onChange={onChangeHandler} />
-                                    </div>
-                                    <div className="checkbox-input">
-                                        <label className="form-check-label">Chỗ để xe</label>
-                                        <input type="checkbox" name='parking' className="form-check-input" onChange={onChangeHandler} />
-                                    </div>
 
-                                    <div className="checkbox-input">
-                                        <label className="form-check-label">Điều hòa</label>
-                                        <input type="checkbox" name='airConditioner' className="form-check-input" onChange={onChangeHandler} />
-                                    </div>
-
+                        {post.type === postConstant.CAN_HO_TYPE ?
+                            <>
+                                <div className="select-address">
+                                    <h3>
+                                        Vị trí bất động sản
+                                    </h3>
                                 </div>
-                            </div>
-                            <div className="row-second">
-                                <div>
-                                    <label> Giá cho thuê</label>
-                                    <input type="number"
-                                        name='price'
-                                        placeholder="Đơn vị VNĐ"
-                                        onChange={onChangeHandler}></input>
-                                </div>
-                                <div>
-                                    <label> Tiền đặt cọc</label>
-                                    <input type="number"
-                                        name='deposit'
+                                <div className="input-address">
+                                    <input type="text" placeholder="Block/Tháp"
                                         onChange={onChangeHandler}
-                                        disabled={inputDisable ? "disabled" : ""}
-                                        placeholder="Đơn vị VNĐ. Số tiền đặt cọc nên trên 10% tiền cho thuê"></input>
+                                        name="tower"></input>
+                                    <input type="number" placeholder="Tầng số"
+                                        name="floor"
+                                        onChange={onChangeHandler}></input>
                                 </div>
-                                <div>
-                                    <label> Giá nước</label>
-                                    <input type="number" name='waterPrice' placeholder="Đơn vị VNĐ" onChange={onChangeHandler}></input>
+                            </>
+                            : null}
+
+                        <div className="infor-desc">
+                            <h3>Thông tin mô tả</h3>
+                            <div className="post-infor">
+                                <label> Tiêu đề</label>
+                                <input type="text" placeholder="Tiêu đề bài viết" name='title' onChange={onChangeHandler}></input>
+                                <label> Tóm tắt ngắn gọn</label>
+                                <input type="text" placeholder="Tóm tắt bài viết" name='brief'
+                                    onChange={onChangeHandler}></input>
+                                <label> Thông tin chi tiết</label>
+                                <textarea name='content'
+                                    onChange={onChangeHandler}
+                                    placeholder="Mô tả chi tiết thông tin phòng cho thuê, nên viết tiếng Việt có dấu."></textarea>
+                            </div>
+                            <div className="accomodation-infor">
+                                <div className="row-first">
+                                    <div>
+                                        <label> Thông tin liên hệ</label>
+                                        <input type="text" name='phone' placeholder="Số điện thoại"
+                                            style={{ backgroundColor: "#ddd" }}
+                                            disabled={true}
+                                            value={post.phone}
+                                            onChange={onChangeHandler}></input>
+                                    </div>
+                                    {post.type === postConstant.CAN_HO_TYPE || post.type === postConstant.NHA_NGUYEN_CAN_TYPE ? <div>
+                                        <label> Số phòng ngủ</label>
+                                        <input type="number" name='bedroom' placeholder=""
+                                            onChange={onChangeHandler}></input>
+                                    </div> : null}
+                                    <div>
+                                        <label> Diện tích</label>
+                                        <input type="number" name='acreage'
+                                            placeholder="Diện tích phòng trọ đơn vị mét vuông" min="12"
+                                            onChange={onChangeHandler}></input>
+                                    </div>
+
+                                    <div className="form-check">
+                                        <div className="checkbox-input">
+                                            <label className="form-check-label">Internet free</label>
+                                            <input type="checkbox"
+                                                name='internet'
+                                                className="form-check-input"
+                                                checked={post.internet}
+                                                onChange={onChangeHandler} />
+                                        </div>
+
+                                        <div className="checkbox-input">
+                                            <label className="form-check-label">Điều hòa</label>
+                                            <input type="checkbox" name='airConditioner' className="form-check-input" onChange={onChangeHandler} />
+                                        </div>
+
+                                        <div className="checkbox-input">
+                                            <label className="form-check-label">Chỗ để xe</label>
+                                            <input type="checkbox" name='parking' className="form-check-input" onChange={onChangeHandler} />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row-second">
+                                    <div>
+                                        <label> Giá cho thuê</label>
+                                        <input type="number"
+                                            name='price'
+                                            placeholder="Đơn vị VNĐ"
+                                            onChange={onChangeHandler}></input>
+                                    </div>
+                                    {post.type === postConstant.CAN_HO_TYPE || post.type === postConstant.NHA_NGUYEN_CAN_TYPE ? <div>
+                                        <label> Số phòng vệ sinh</label>
+                                        <input type="number"
+                                            name='toilet' placeholder=""
+                                            onChange={onChangeHandler}></input>
+                                    </div> : null}
+                                    <div>
+                                        <label> Tiền cọc</label>
+                                        <input type="number"
+                                            name='deposit'
+                                            onChange={onChangeHandler}
+                                            disabled={inputDisable ? "disabled" : ""}
+                                            placeholder="Đơn vị VNĐ"></input>
+                                    </div>
+                                    <div className='form-check'>
+                                        <div className="checkbox-input">
+                                            <label className="form-check-label">Máy nước nóng</label>
+                                            <input type="checkbox" name='heater' className="form-check-input" onChange={onChangeHandler} />
+                                        </div>
+
+                                        <div className="checkbox-input">
+                                            <label className="form-check-label">Tủ lạnh</label>
+                                            <input type="checkbox" name='fridge' className="form-check-input" onChange={onChangeHandler} />
+                                        </div>
+
+                                        <div className="checkbox-input">
+                                            <label className="form-check-label">Nội thất</label>
+                                            <input type="checkbox" name='furniture' className="form-check-input" onChange={onChangeHandler} />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="media-infor">
-                            <h3>Hình ảnh</h3>
-                            <div className="media">
-                                <input type="file" multiple accept='image/*' onChange={onChangePicture}></input>
-                                <p>Kéo hình vào hoặc bấm vào để tải hình ảnh lên. Tối đa 5 hình ảnh.</p>
-                                <div className="preview-image">
-                                    {previewImage.previewImages && previewImage.previewImages.map((value, index) => {
-                                        return (<img src={value} alt={value + index} key={index}></img>)
-                                    })}
+
+                            <div className="media-infor">
+                                <h3>Hình ảnh</h3>
+                                <div className="media">
+                                    <input type="file" multiple accept='image/*' onChange={onChangePicture}></input>
+                                    <p>Kéo hình vào hoặc bấm vào để tải hình ảnh lên. Tối đa 5 hình ảnh.</p>
+                                    <div className="preview-image">
+                                        {previewImage.previewImages && previewImage.previewImages.map((value, index) => {
+                                            return (<img src={value} alt={value + index} key={index}></img>)
+                                        })}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="media-infor-video">
-                            <h3>Video</h3>
-                            <div className="media">
-                                <input type="file" accept="video/*" onChange={onChangeVideo} multiple></input>
-                                <p>Kéo video vào hoặc bấm vào để tải hình video lên. Tối đa 1 video</p>
+                            <div className="media-infor-video">
+                                <h3>Video</h3>
+                                <div className="media">
+                                    <input type="file" accept="video/*" onChange={onChangeVideo} multiple></input>
+                                    <p>Kéo video vào hoặc bấm vào để tải hình video lên. Tối đa 1 video</p>
+                                </div>
                             </div>
-                        </div>
-                        <div className="btn-action">
-                            <button className="create-post-btn" type="submit">Đăng tin</button>
-                            <button className="create-post-btn clear-post-btn" type="submit">Xóa thông tin</button>
-                        </div>
-                    </div>
+                            <div className="btn-action">
+                                <button className="create-post-btn" type="submit">Đăng tin</button>
+                                <button className="create-post-btn clear-post-btn" type="submit">Xóa thông tin</button>
+                            </div>
+                        </div></> : null}
                 </form>
-            </div>
+            </div >
         </>
     );
 };

@@ -14,7 +14,7 @@ const Layout = (props) => {
         <Fragment>
             <NavBar></NavBar>
             <Main>
-                <Hierarchical></Hierarchical>
+                {/* <Hierarchical></Hierarchical> */}
                 <Route path="/home" exact>
                     <HomePage></HomePage>
                 </Route>
@@ -24,7 +24,7 @@ const Layout = (props) => {
                 <PrivateRoute authenticated={props.authenticated}
                     path="/home/user/post/create-post" componentLoggedIn={PostPage}></PrivateRoute>
             </Main>
-            <Footer></Footer>
+            {/* <Footer></Footer> */}
         </Fragment>
     )
 }

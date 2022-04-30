@@ -47,7 +47,6 @@ const getTypePosts=()=>{
 
 const searchPostByCriteria=(url)=>{
     const headers= authHeader();
-    console.log(url);
     return callAPI(headers,url,"GET");
 }
 

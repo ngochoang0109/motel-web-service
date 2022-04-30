@@ -97,6 +97,10 @@
     color: #808080;
 }
 
+.disable-input{
+    background-color: #ddd;
+}
+
 /* DESCRIPTION INFORMATION */
 
 .infor-desc h3 {

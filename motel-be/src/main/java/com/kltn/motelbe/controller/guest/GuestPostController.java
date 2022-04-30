@@ -55,7 +55,7 @@ public class GuestPostController {
 		}
 		
 		
-		Paging<PostResponse> posts= postService.getPostsByCriteria(pageNo, pageSize, field,properties);
+		Paging<PostResponse> posts= postService.getPostsByCriteria(pageNo, pageSize, field,type,address);
 		return new ResponseEntity<Paging<PostResponse>>(posts, HttpStatus.OK);
 	}
 }
