@@ -19,7 +19,7 @@ public class UserController {
 	private UserService userService;
 
 	@GetMapping
-	@PreAuthorize("hasRole('ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_USER')"+"||"+"hasRole('ROLE_ADMIN')")
 	public ResponseEntity<UserDto> getCurrentUser(Authentication authentication){
 		UserDto userDto=userService.findUserByUsernameOrEmail(authentication.getName(),authentication.getName());
 		return new ResponseEntity<UserDto>(userDto,HttpStatus.OK);

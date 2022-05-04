@@ -237,13 +237,13 @@
 }
 
 /* BUTTON SUBMIT FORM */
-.btn-action {
+.btn-action-page {
     display: flex;
     flex-direction: row;
     margin-bottom: 1rem;
 }
 
-.btn-action .create-post-btn {
+.btn-action-page .create-post-btn {
     width: 250px;
     height: 50px;
     margin: 0 auto;

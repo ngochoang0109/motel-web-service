@@ -39,4 +39,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 			+ "p.approved=true and p.reject=false and "
 			+ "p.accommodation.address like %:address%")
 	Page<Post> getPostsContainAddress(Pageable pageable, @Param("address") String address);
+	
+	@Query("SELECT p FROM Post p WHERE p.approved=false and p.reject=false")
+	Page<Post> getAllPostsWaiting(Pageable pageable);
 }

@@ -77,11 +77,16 @@
 
 
 .column-image img{
-   border: 1px solid #ddd; 
+   /* border: 1px solid #ddd; 
    border-radius: 4px;  
    padding: 5px;
    width: 100%; 
-   height: 80%;
+   height: 80%; */
+   border: 1px solid #ddd; 
+   border-radius: 4px;  
+   padding: 3px;
+   width:150px;
+   height: 120px;
 }
 
 .column-title{
@@ -92,15 +97,14 @@
 /* BUTTON SUBMIT FORM */
 .btn-action{
    display: flex;
+   flex-direction: column;
    justify-content: center;
    font-weight: bold;
 }
-.btn-action:last-child{
-   margin-right: 0px;
-}
+
 .btn-business {
    cursor: pointer;
-   margin-right: 0.5rem;
+   margin-bottom: 0.5rem;
 }
 .btn-business {
    position: relative;

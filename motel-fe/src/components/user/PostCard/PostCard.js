@@ -1,4 +1,4 @@
-import formatDate from '../../../../../utils/fomatDate';
+import formatDate from './../../../utils/fomatDate';
 import './PostCard.css';
 import moment from 'moment';
 import { useEffect, useState } from 'react';

@@ -13,8 +13,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kltn.motelbe.dto.AccommodationDto;
 import com.kltn.motelbe.dto.ImageDto;
+import com.kltn.motelbe.dto.PostDto;
+import com.kltn.motelbe.dto.UserDto;
+import com.kltn.motelbe.dto.VideoDto;
 import com.kltn.motelbe.entity.Accommodation;
+import com.kltn.motelbe.entity.Image;
 import com.kltn.motelbe.entity.Post;
 import com.kltn.motelbe.entity.User;
 import com.kltn.motelbe.exception.ResourceNotFoundException;
@@ -23,6 +28,7 @@ import com.kltn.motelbe.mapper.PostMapper;
 import com.kltn.motelbe.mapper.VideoMapper;
 import com.kltn.motelbe.paging.Paging;
 import com.kltn.motelbe.payload.request.PostRequest;
+import com.kltn.motelbe.payload.response.PostDetailResp;
 import com.kltn.motelbe.payload.response.PostResponse;
 import com.kltn.motelbe.repository.PostRepository;
 import com.kltn.motelbe.repository.UserRepository;
@@ -169,5 +175,31 @@ public class PostServiceImpl implements PostService {
 				posts.getNumber(), posts.getSize(), posts.getTotalElements(), 
 				posts.getTotalPages(), posts.isLast(), posts.isFirst());
 		return paging;
+	}
+	
+	@Override
+	public Paging<PostResponse> getAllPostsWaiting(int pageNo, int pageSize, String field) {
+		Pageable pageable= PageAndSortUtils.getPageable(pageNo, pageSize, field);
+		Page<Post> posts= postRepository.getAllPostsWaiting(pageable);
+		Paging<PostResponse> paging= new Paging<>(postMapper.mapPostsToPostResponses(posts.getContent()), 
+				posts.getNumber(), posts.getSize(), posts.getTotalElements(), 
+				posts.getTotalPages(), posts.isLast(), posts.isFirst());
+		return paging;
+	}
+	
+	
+	@Override
+	public PostDetailResp getDetailPost(long id) {
+		Post post= this.postRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("post", "id", id));
+		
+		PostDto postDto= postMapper.mapPostToPostDto(post);
+		AccommodationDto accommodationDto= modelMapper.map(post.getAccommodation(), AccommodationDto.class);
+		UserDto userDto= modelMapper.map(post.getUser(), UserDto.class);
+		Set<ImageDto> imageDto= imageMapper.mapImagesToImageDtos(post.getAccommodation().getImages());
+		Set<VideoDto> videoDto= videoMapper.mapVideosToVideoDtos(post.getAccommodation().getVideos());
+		
+		PostDetailResp postDetailResp= new PostDetailResp(postDto, userDto, accommodationDto, imageDto, videoDto);
+		
+		return postDetailResp;
 	}
 }

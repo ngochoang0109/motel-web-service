@@ -26,17 +26,29 @@ const login = (user) => {
                     success: true
                 }
                 dispatch(alertAction.success(alertData));
+                dispatch(currentUser());
                 return dispatch({
                     type: userConstant.LOGIN_SUCCESS,
                     user: response.data
                 });
             })
             .catch((error) => {
-                console.log(error.response.status)
                 return dispatch({
                     type: userConstant.LOGIN_FAILURE,
                     message: String(error.response.status)
                 })
+            })
+    }
+}
+
+const currentUser=()=>{
+    return (dispatch) => {
+        return userService.getCurrentUser()
+            .then((response) => {
+                return dispatch({
+                    type: userConstant.USER_INFOR,
+                    user: response.data
+                });
             })
     }
 }
@@ -51,5 +63,6 @@ const logout = () => {
 export const userActions = {
     login,
     register,
-    logout
+    logout,
+    currentUser
 };

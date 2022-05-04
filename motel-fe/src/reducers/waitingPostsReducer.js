@@ -1,4 +1,4 @@
-import postConstant from "../../constants/postConstant";
+import postConstant from "../constants/postConstant";
 
 
 const initialState = {

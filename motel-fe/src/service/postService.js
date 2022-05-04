@@ -29,7 +29,7 @@ const getRejectPosts=()=>{
     return callAPI(headers,"posts/reject","GET");
 }
 
-const getWaitingPosts=()=>{
+const getWaitingPostsOfUser=()=>{
     const headers= authHeader();
     return callAPI(headers,"posts/wait-ing","GET");
 }
@@ -51,12 +51,19 @@ const searchPostByCriteria=(url)=>{
 }
 
 
+const getAllWaitingPosts=()=>{
+    const headers= authHeader();
+    return callAPI(headers,'admin/posts/wait-ing',"GET");
+}
+
+
 export const postService = {
     createPost, 
     getAll,
     getRejectPosts,
-    getWaitingPosts,
+    getWaitingPostsOfUser,
     getPosts,
     getTypePosts,
-    searchPostByCriteria
+    searchPostByCriteria,
+    getAllWaitingPosts
 } 

@@ -1,7 +1,5 @@
 package com.kltn.motelbe.dto;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +27,5 @@ public class AccommodationDto {
 	private String tower;
 	private double x;
 	private double y;
-	
-	private MultipartFile[] images;
-	private MultipartFile[] videos;
+
 }

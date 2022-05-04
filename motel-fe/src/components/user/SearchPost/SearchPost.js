@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { postAction } from '../../../../../actions/postAction';
-import { provinceAPI } from '../../../../../utils/provinceAPI';
-import Modal from '../Modal/Modal';
+import { postAction } from './../../../actions/postAction';
+import { provinceAPI } from './../../../utils/provinceAPI';
+import Modal from './../Modal/Modal';
 import './SearchPost.css';
 
 const SearchPost = () => {

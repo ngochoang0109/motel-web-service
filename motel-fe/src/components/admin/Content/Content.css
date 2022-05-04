@@ -1,0 +1,10 @@
+.area {
+    background: #e2e2e2;
+    margin-left: 300px;
+    margin-top: 2rem;
+    margin-right: 3.2rem;
+}
+
+.area *{
+    color: #212121;
+}

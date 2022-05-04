@@ -37,9 +37,6 @@ public class Post {
 	@Column(nullable = false)
 	private String title;
 	
-	@Column(name = "phone", nullable = false)
-	private String phone;
-	
 	@Lob
 	private String content;
 	
@@ -64,12 +61,12 @@ public class Post {
 	@JoinColumn(name = "user_id")
 	private User user;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "type")
 	@JsonManagedReference
 	private TypePost typePost;
 	
-	@OneToOne(mappedBy = "post",cascade=CascadeType.ALL)
+	@OneToOne(mappedBy = "post",cascade=CascadeType.ALL, fetch = FetchType.LAZY)
 	private Accommodation accommodation;
 
 }

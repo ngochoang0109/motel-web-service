@@ -4,9 +4,10 @@ import alertReducer from './alertReducer';
 import authReducer from './auth/authReducer';
 import postsReducer from './user/postsReducer';
 import rejectPostsReducer from './user/rejectPostsReducer';
-import waitingPostsReducer from './user/waitingPostsReducer';
+import waitingPostsReducer from './waitingPostsReducer';
 import menuPostReducer from './user/menuPostReducer';
 import typePostsReducer from './typePostsReducer';
+import userInfor from './user/userInfor';
 
 const appReducer = combineReducers({
     alertReducer,
@@ -15,7 +16,8 @@ const appReducer = combineReducers({
     rejectPostsReducer,
     waitingPostsReducer,
     menuPostReducer,
-    typePostsReducer
+    typePostsReducer,
+    userInfor
 })
 
 const rootReducer = (state, action) => {

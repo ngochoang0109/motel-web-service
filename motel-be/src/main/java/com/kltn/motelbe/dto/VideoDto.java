@@ -1,7 +1,5 @@
 package com.kltn.motelbe.dto;
 
-import java.util.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,11 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostDto {
-	private String title;
-	private String brief;
-	private String content;
-	private long type;
-	private Date createDate;
-	private Date updateDate;
+public class VideoDto {
+	private String source;
 }

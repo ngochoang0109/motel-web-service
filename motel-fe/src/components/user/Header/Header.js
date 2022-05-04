@@ -2,11 +2,11 @@ import { useEffect } from 'react';
 import { useAlert } from 'react-alert';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
-import { userActions } from '../../../../actions/userAction';
-import logo from './../../../../assets/images/icon-ui.png';
+import { userActions } from '../../../actions/userAction';
+import logo from './../../../assets/images/icon-ui.png';
 import './Header.css';
-import * as alertAction from './../../../../actions/alertAction';
-import * as alertConstant from './../../../../constants/alertConstant';
+import * as alertAction from '../../../actions/alertAction';
+import * as alertConstant from '../../../constants/alertConstant';
 
 
 const Header = () => {

@@ -70,15 +70,12 @@ const MapContainer = (props) => {
 
     const handlerSelectLocation = (event) => {
 
-        // props.handlerLocation({ latitude: event.lat, longitude: event.lng });
+        props.handlerLocation({ latitude: event.lat, longitude: event.lng });
 
-        // setLocationState({
-        //     latitude: event.lat,
-        //     longitude: event.lng
-        // });
-        // console.log(event.lat + ' ' + event.lng);
-        // fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${event.lat},${event.lng}&key=${'AIzaSyDJuUbaaJszox_3o-_H1gsF2NnFd3QI_RU'}`)
-        //     .then(res => console.log(res.json()));
+        setLocationState({
+            latitude: event.lat,
+            longitude: event.lng
+        });
 
     }
 

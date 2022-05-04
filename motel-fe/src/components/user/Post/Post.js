@@ -1,4 +1,4 @@
-import formatDate from "../../../../../utils/fomatDate";
+import formatDate from "../../../utils/fomatDate";
 
 const Post = (props) => {
 

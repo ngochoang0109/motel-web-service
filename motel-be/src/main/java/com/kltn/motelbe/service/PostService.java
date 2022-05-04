@@ -5,8 +5,10 @@ import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kltn.motelbe.entity.Post;
 import com.kltn.motelbe.paging.Paging;
 import com.kltn.motelbe.payload.request.PostRequest;
+import com.kltn.motelbe.payload.response.PostDetailResp;
 import com.kltn.motelbe.payload.response.PostResponse;
 
 public interface PostService {
@@ -25,4 +27,9 @@ public interface PostService {
 	Paging<PostResponse> getPosts(int pageNo, int pageSize, String field);
 	
 	Paging<PostResponse> getPostsByCriteria(int pageNo, int pageSize, String field, String type, String address);
+	
+	Paging<PostResponse> getAllPostsWaiting(int pageNo, int pageSize, String field);
+	
+	PostDetailResp getDetailPost(long id);
+	
 }

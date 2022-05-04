@@ -9,13 +9,14 @@ import postConstant from '../../../constants/postConstant';
 import { LocationDefault } from '../../../utils/LocationDefault';
 
 import './PostPage.css';
-import { userService } from '../../../service/userService';
+import { userActions } from '../../../actions/userAction';
 const PostPage = () => {
     const alert = useAlert();
     const dispatch = useDispatch();
     const history = useHistory();
 
     const typePosts = useSelector(state => state.typePostsReducer);
+    const userInfor = useSelector(state => state.userInfor);
 
     const [provinceName, setProvinceName] = useState({
         namePro: ""
@@ -39,7 +40,7 @@ const PostPage = () => {
 
     const [inputDisable, setInputDisable] = useState(true);
 
-    
+
 
     const [post, setPost] = useState({
         provinceCode: "",
@@ -68,7 +69,7 @@ const PostPage = () => {
         type: ""
     });
 
-    const[houseAndStreet, setHouseAndStreet]=useState(post.streetAndNumOfHouse);
+    const [houseAndStreet, setHouseAndStreet] = useState(post.streetAndNumOfHouse);
 
     const showProvinces = () => {
         const provinces = provinceAPI.getAllProvinces();
@@ -124,13 +125,10 @@ const PostPage = () => {
     }
 
     useEffect(() => {
-        if (typePosts.length === 0) {
             dispatch(postAction.getTypePosts());
-            userService.getCurrentUser().then((response) => {
-                setPost({ ...post, phone: response.data.phone });
-            });
-        }
-    })
+            dispatch(userActions.currentUser());
+            setPost({ ...post, ...userInfor.phone });
+    },[])
 
     useEffect(() => {
         if (post.provinceCode !== "") {
@@ -233,7 +231,7 @@ const PostPage = () => {
     const alertStatus = useSelector(state => state.alertReducer);
 
     const handlerLocationSelect = ({ latitude, longitude }) => {
-        setPost({...post,xCoordinate:latitude, yCoordinate:longitude});
+        setPost({ ...post, xCoordinate: latitude, yCoordinate: longitude });
     }
 
     const onSubmitHandler = (event) => {
@@ -244,7 +242,7 @@ const PostPage = () => {
         }
 
     }
-    const onFocusOut=(event)=>{
+    const onFocusOut = (event) => {
         console.log(event.target.value)
         setHouseAndStreet(event.target.value);
     }
@@ -308,13 +306,16 @@ const PostPage = () => {
                         </div>
 
                         <div className='map-block'>
-                            <MapContainer location={LocationDefault}
+                            <MapContainer 
+                                location={LocationDefault}
                                 zoomLevel={14}
                                 handlerLocation={handlerLocationSelect}
-                                address={{provinceName:provinceName.namePro, 
-                                            districtName:districtName.nameDis, 
-                                            wardName:wardName.nameWard,
-                                            houseAndStreet:houseAndStreet}}>
+                                address={{
+                                    provinceName: provinceName.namePro,
+                                    districtName: districtName.nameDis,
+                                    wardName: wardName.nameWard,
+                                    houseAndStreet: houseAndStreet
+                                }}>
                             </MapContainer>
                         </div>
 
@@ -327,7 +328,7 @@ const PostPage = () => {
                                 style={{ backgroundColor: "#ddd" }}
                                 disabled={true}
                                 name="xyCoordinate"
-                                value={post.xCoordinate!=='' && post.yCoordinate!==''?`${post.xCoordinate.toFixed(8)}-${post.yCoordinate.toFixed(8)}`:''}
+                                value={post.xCoordinate !== '' && post.yCoordinate !== '' ? `${post.xCoordinate.toFixed(8)},${post.yCoordinate.toFixed(8)}` : ''}
                                 onChange={onChangeHandler}></input>
                         </div>
 
@@ -369,7 +370,7 @@ const PostPage = () => {
                                         <input type="text" name='phone' placeholder="Số điện thoại"
                                             style={{ backgroundColor: "#ddd" }}
                                             disabled={true}
-                                            value={post.phone}
+                                            value={userInfor.phone}
                                             onChange={onChangeHandler}></input>
                                     </div>
                                     {post.type === postConstant.CAN_HO_TYPE || post.type === postConstant.NHA_NGUYEN_CAN_TYPE ? <div>
@@ -465,7 +466,7 @@ const PostPage = () => {
                                     <p>Kéo video vào hoặc bấm vào để tải hình video lên. Tối đa 1 video</p>
                                 </div>
                             </div>
-                            <div className="btn-action">
+                            <div className="btn-action-page">
                                 <button className="create-post-btn" type="submit">Đăng tin</button>
                                 <button className="create-post-btn clear-post-btn" type="submit">Xóa thông tin</button>
                             </div>

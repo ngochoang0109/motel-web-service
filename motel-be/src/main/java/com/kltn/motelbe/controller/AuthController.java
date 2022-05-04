@@ -1,6 +1,8 @@
 package com.kltn.motelbe.controller;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kltn.motelbe.dto.UserDto;
 import com.kltn.motelbe.payload.request.LoginReq;
 import com.kltn.motelbe.payload.request.SignUpReq;
 import com.kltn.motelbe.payload.response.ApiResponse;
@@ -57,7 +60,11 @@ public class AuthController {
 		if (jwt.equals(null)) {
 			return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
 		}
-	
-		return ResponseEntity.ok(new JwtAuthenticationResponse(jwt,loginRequest.getUsernameOrEmail()));
+		
+		UserDto userDto= userService.findUserByUsernameOrEmail(loginRequest.getUsernameOrEmail(), loginRequest.getUsernameOrEmail());
+		
+		List<String> roles= userDto.getRoles().stream().map(item->item.getName()).collect(Collectors.toList());
+		
+		return ResponseEntity.ok(new JwtAuthenticationResponse(jwt,loginRequest.getUsernameOrEmail(), roles));
 	}
 }

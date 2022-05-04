@@ -3,9 +3,6 @@ package com.kltn.motelbe.mapper;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.springframework.stereotype.Component;
-
 import com.kltn.motelbe.dto.ImageDto;
 import com.kltn.motelbe.entity.Image;
 
@@ -23,5 +20,13 @@ public class ImageMapper {
 	
 	public ImageDto mapImageToImageDto(Image image) {
 		return new ImageDto(image.getFileName(), image.isFileType());
+	}
+	
+	public Set<ImageDto> mapImagesToImageDtos(Set<Image> images) {
+		Set<ImageDto> imageDtos= new HashSet<>();
+		for (Image image : images) {
+			imageDtos.add(mapImageToImageDto(image));
+		}
+		return imageDtos;
 	}
 }

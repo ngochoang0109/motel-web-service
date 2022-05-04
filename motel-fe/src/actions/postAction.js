@@ -3,6 +3,7 @@ import { postService } from "../service/postService";
 import { provinceAPI } from "../utils/provinceAPI";
 import * as alertAction from './alertAction';
 import * as alertConstant from './../constants/alertConstant';
+import { convertTypePostUtils } from './../utils/convertTypePostUtils';
 
 const addPostRequest = (postState, imageRequest, videoRequest) => {
 
@@ -20,25 +21,14 @@ const addPostRequest = (postState, imageRequest, videoRequest) => {
         toilet, heater, fridge, furniture,
         xCoordinate, yCoordinate } = postState;
 
-    const getType = () => {
-        switch (postState.type) {
-            case postConstant.NHA_NGUYEN_CAN_TYPE:
-                return 1;
-            case postConstant.PHONG_TRO_TYPE:
-                return 2;
-            case postConstant.CAN_HO_TYPE:
-                return 3;
-            default:
-                return 1;
-        }
-    }
+    
 
     const post = {
         title,
         brief,
         content,
         phone,
-        type: getType()
+        type: convertTypePostUtils.getType(postState.type)
     }
 
     const accommodation = {
@@ -113,7 +103,7 @@ const getRejectPosts = () => {
 
 const getWaitingPosts = () => {
     return (dispatch) => {
-        return postService.getWaitingPosts()
+        return postService.getWaitingPostsOfUser()
             .then((response) => {
                 return (dispatch({
                     type: postConstant.GET_WAITING_POSTS,
@@ -175,6 +165,19 @@ const getPostsBySearchCriteria = (searchCriteria) => {
     }
 }
 
+const getAllPostsWaiting = () => {
+    return (dispatch) => {
+        return postService.getAllWaitingPosts()
+            .then((response) => {
+                return (dispatch({
+                    type: postConstant.GET_WAITING_POSTS,
+                    page: response.data
+                }))
+            })
+            .catch()
+    }
+}
+
 export const postAction = {
     addPostRequest,
     getAllPosts,
@@ -182,5 +185,6 @@ export const postAction = {
     getWaitingPosts,
     getPostsShowing,
     getTypePosts,
-    getPostsBySearchCriteria
+    getPostsBySearchCriteria,
+    getAllPostsWaiting
 }
