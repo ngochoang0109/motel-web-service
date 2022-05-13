@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.kltn.motelbe.entity.TypePost;
 import com.kltn.motelbe.exception.ResourceNotFoundException;
-import com.kltn.motelbe.exception.WebServerException;
 import com.kltn.motelbe.repository.TypePostRepository;
 import com.kltn.motelbe.service.TypePostService;
 

@@ -1,5 +1,5 @@
 import { convertTypePostUtils } from "../../../utils/convertTypePostUtils";
-import formatDate from "../../../utils/fomatDate";
+import formatDate from "../../../utils/formatDate";
 import './Post.css';
 import { Link } from 'react-router-dom';
 

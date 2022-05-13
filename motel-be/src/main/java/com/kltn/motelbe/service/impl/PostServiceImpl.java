@@ -19,7 +19,6 @@ import com.kltn.motelbe.dto.PostDto;
 import com.kltn.motelbe.dto.UserDto;
 import com.kltn.motelbe.dto.VideoDto;
 import com.kltn.motelbe.entity.Accommodation;
-import com.kltn.motelbe.entity.Image;
 import com.kltn.motelbe.entity.Post;
 import com.kltn.motelbe.entity.User;
 import com.kltn.motelbe.exception.ResourceNotFoundException;
@@ -202,4 +201,27 @@ public class PostServiceImpl implements PostService {
 		
 		return postDetailResp;
 	}
+	
+	
+	@Override
+	@Transactional
+	public boolean updateStatusPost(long id, boolean status) {
+		
+		Post post= this.postRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("post", "id", id));
+		
+		if(status==true) {
+			post.setApproved(true);
+			post.setApprovedDate(new Date());
+			postRepository.save(post);
+			return true;
+		}
+		else {
+			post.setApproved(false);
+			post.setReject(true);
+			postRepository.save(post);
+			return false;
+		}
+	}
+	
+	
 }

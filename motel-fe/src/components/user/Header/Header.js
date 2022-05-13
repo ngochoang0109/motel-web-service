@@ -11,13 +11,13 @@ import * as alertConstant from '../../../constants/alertConstant';
 
 const Header = () => {
     const alert = useAlert();
-    const alertStatus = useSelector(state => state.alertReducer.success);
+    const alertStatus = useSelector(state => state.alertReducer);
     const auth=useSelector(state => state.authReducer.loggedIn);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (alertStatus) {
-            alert.show('Bạn đã đăng nhập thành công', {
+        if (alertStatus.success) {
+            alert.show(alertStatus.message, {
                 timeout: 3000,
                 type: 'success',
                 onClose:()=>{
@@ -44,7 +44,7 @@ const Header = () => {
                 <li><Link to="/"><i className="fas fa-solid fa-landmark"></i> Trang chủ</Link></li>
                 <li><Link to="/home/user/posts"><i className="fas fa-solid fa-users"></i> Quản lý tin</Link></li>
                 <li><a href="/#"><i className="fas fa-solid fa-bookmark"></i> Tin đã lưu</a></li>
-                <li><a href="/#"><i className="fas fa-solid fa-cart-arrow-down"></i> Đơn hàng đã cọc</a></li>
+                {/* <li><a href="/#"><i className="fas fa-solid fa-cart-arrow-down"></i> Đơn hàng đã cọc</a></li> */}
                 <li><a href="/#"><i className="fas fa-solid fa-bell"></i> Thông báo</a></li>
                 <li className="dropdown-action">
                     <div className="hover">

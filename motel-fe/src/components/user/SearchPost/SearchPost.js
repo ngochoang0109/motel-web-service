@@ -22,12 +22,14 @@ const SearchPost = () => {
             type: "type",
             title: "Loại nhà ở",
             status: false,
-            data: ""
+            data: "",
+            show:""
         }, {
             type: "address",
             title: "Chọn khu vực",
             status: false,
-            data: ""
+            data: "",
+            show:""
         }, {
             type: "price",
             title: "Giá",
@@ -44,7 +46,7 @@ const SearchPost = () => {
     const showTypePost = (title) => {
         const content = <ul className='itemList'>
             {typePosts.map((value, index) => {
-                return (<li key={index} onClick={() => handlerSearchFields(value.shortName)}>
+                return (<li key={index} onClick={() => handlerSearchFields(value.shortName,value.fullName)}>
                     <span>{value.fullName}</span>
                     <i className="fas fa-solid fa-arrow-right pd-l"></i>
                 </li>)
@@ -57,12 +59,13 @@ const SearchPost = () => {
         </Modal>
     }
 
-    const handlerSearchFields = (value) => {
+    const handlerSearchFields = (value,show) => {
         switch (name) {
             case searchManagement[1].type:
                 const updateType = searchManagement[1];
                 updateType.status = true;
                 updateType.data = value;
+                updateType.show=show;
                 dispatch(postAction.getPostsBySearchCriteria(searchManagement));
                 setShow(false);
                 return;
@@ -70,6 +73,11 @@ const SearchPost = () => {
                 const updateAddress = searchManagement[2];
                 updateAddress.status = true;
                 updateAddress.data = value;
+                if(show.length>15){
+                    updateAddress.show=`${show.slice(0,16)}..`;
+                }else{
+                    updateAddress.show=show
+                }
                 dispatch(postAction.getPostsBySearchCriteria(searchManagement));
                 setShow(false);
                 return;
@@ -87,6 +95,24 @@ const SearchPost = () => {
     useEffect(() => {
         dispatch(postAction.getTypePosts());
     }, []);
+
+    const showProvinces = (title) => {
+        const provinces= provinceAPI.getAllProvinces();
+        const content = (<ul className='itemList'>
+            {provinces.map((value, index) => {
+                return <li key={value.code}
+                    onClick={() => handlerSearchFields(value.name,value.name)}
+                    name={searchManagement[1].type}>
+                    <span>{value.name}</span>
+                    <i className="fas fa-solid fa-arrow-right pd-l"></i>
+                </li>
+            })}
+        </ul>)
+        return <Modal title={title}
+            onClose={() => setShow(false)} show={show}
+            content={content}>
+        </Modal>
+    }
 
     const showDistrictsByProvinceCode = (title) => {
         const districts = provinceAPI.getDistrictsByProvinceCode(79);
@@ -120,7 +146,7 @@ const SearchPost = () => {
                 return (showTypePost(title))
             case searchManagement[2].type:
                 title = searchManagement[2].title;
-                return (showDistrictsByProvinceCode(title))
+                return (showProvinces(title))
             case searchManagement[3].type:
                 title = searchManagement[3].title;
                 return (<Modal title={title} onClose={() => setShow(false)} show={show}>
@@ -146,11 +172,11 @@ const SearchPost = () => {
                 </div>
                 <div className="type-post-search" role="button" onClick={showModalSearch} name={searchManagement[1].type}>
                     <i className="fas fa-solid fa-hotel"></i>
-                    <span name={searchManagement[1].type}> Phòng trọ, nhà trọ</span>
+                    <span name={searchManagement[1].type}>{searchManagement[1].show===""?"Phòng trọ, nhà trọ":searchManagement[1].show}</span>
                 </div>
                 <div className="address-search" role="button" onClick={showModalSearch} name={searchManagement[2].type}>
                     <i className="fas fa-solid fa-thumbtack"></i>
-                    <span name={searchManagement[2].type}> Quận </span>
+                    <span name={searchManagement[2].type}>{searchManagement[2].show===""?"Tỉnh/ Thành phố ":searchManagement[2].show} </span>
                 </div>
                 <div className="price-search" role="button" onClick={showModalSearch} name={searchManagement[3].type}>
                     <i className="fas fa-regular fa-tag"></i>

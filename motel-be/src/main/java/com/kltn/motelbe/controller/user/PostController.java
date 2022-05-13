@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,11 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kltn.motelbe.constant.PageAndSortConstant;
-import com.kltn.motelbe.dto.ImageDto;
 import com.kltn.motelbe.paging.Paging;
 import com.kltn.motelbe.payload.request.PostRequest;
+import com.kltn.motelbe.payload.response.PostDetailResp;
 import com.kltn.motelbe.payload.response.PostResponse;
-import com.kltn.motelbe.service.ImageService;
 import com.kltn.motelbe.service.PostService;
 
 @RestController
@@ -75,6 +75,14 @@ public class PostController {
 			Authentication authentication){
 		Paging<PostResponse> posts= postService.getPostsWaitingOfUser(pageNo, pageSize, field, authentication.getName());
 		return new ResponseEntity<Paging<PostResponse>>(posts, HttpStatus.OK);
+	}
+	
+	
+	@GetMapping(value = "/{id}")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<PostDetailResp> getPostDetail(@PathVariable("id") long id){
+		PostDetailResp post= postService.getDetailPost(id);
+		return new ResponseEntity<PostDetailResp>(post, HttpStatus.OK);
 	}
 	
 }

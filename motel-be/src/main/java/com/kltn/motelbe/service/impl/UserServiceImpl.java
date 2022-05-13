@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.kltn.motelbe.constant.RoleConstant;
 import com.kltn.motelbe.dto.UserDto;
-import com.kltn.motelbe.entity.Post;
 import com.kltn.motelbe.entity.Role;
 import com.kltn.motelbe.entity.User;
 import com.kltn.motelbe.exception.BadRequestException;

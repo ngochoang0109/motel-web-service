@@ -1,11 +1,9 @@
 package com.kltn.motelbe.service;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.kltn.motelbe.entity.Post;
 import com.kltn.motelbe.paging.Paging;
 import com.kltn.motelbe.payload.request.PostRequest;
 import com.kltn.motelbe.payload.response.PostDetailResp;
@@ -31,5 +29,7 @@ public interface PostService {
 	Paging<PostResponse> getAllPostsWaiting(int pageNo, int pageSize, String field);
 	
 	PostDetailResp getDetailPost(long id);
+	
+	boolean updateStatusPost( long id,boolean status);
 	
 }

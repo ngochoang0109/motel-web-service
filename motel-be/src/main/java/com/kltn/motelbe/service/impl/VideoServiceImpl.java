@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kltn.motelbe.entity.Accommodation;
-import com.kltn.motelbe.entity.Image;
 import com.kltn.motelbe.entity.Video;
 import com.kltn.motelbe.repository.VideoRepository;
 import com.kltn.motelbe.service.VideoService;

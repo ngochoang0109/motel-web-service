@@ -22,6 +22,8 @@ const Layout = (props) => {
                 </PrivateRoute>
                 <PrivateRoute authenticated={props.authenticated}
                     path="/home/user/post/create-post" componentLoggedIn={PostPage}></PrivateRoute>
+                <PrivateRoute authenticated={props.authenticated}
+                    path="/home/user/post/edit-post/:id" componentLoggedIn={PostPage}></PrivateRoute>
             </Main>
             <Footer></Footer>
         </Fragment>

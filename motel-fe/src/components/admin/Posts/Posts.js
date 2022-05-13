@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
+import { useAlert } from 'react-alert';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { postAction } from '../../../actions/postAction';
 import Post from '../Post/Post';
+import * as alertAction from './../../../actions/alertAction';
 
 const Posts = () => {
 
@@ -11,6 +13,27 @@ const Posts = () => {
     const name = useParams();
     const postsWaiting = useSelector(state => state.waitingPostsReducer);
     const auth = useSelector(state => state.authReducer.loggedIn);
+    const alert = useAlert();
+
+    const alertStatus = useSelector(state => state.alertReducer);
+
+    console.log(alertStatus);
+
+    useEffect(() => {
+        if (alertStatus.message !== '') {
+            alert.show(alertStatus.message, {
+                timeout: 3000,
+                type: 'success',
+                onClose: () => {
+                    dispatch(alertAction.success({
+                        type: '',
+                        message: '',
+                        success: false
+                    }))
+                }
+            })
+        }
+    },[alertStatus])
 
 
     useEffect(() => {

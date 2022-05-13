@@ -25,7 +25,7 @@ public class AccommodationDto {
 	private double deposit;
 	private int toilet;
 	private String tower;
-	private double x;
-	private double y;
+	private String x;
+	private String y;
 
 }

@@ -1,10 +1,7 @@
 package com.kltn.motelbe.service;
 
 import java.io.File;
-import java.io.InputStream;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.web.multipart.MultipartFile;
 

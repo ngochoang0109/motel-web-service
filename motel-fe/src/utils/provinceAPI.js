@@ -25,7 +25,6 @@ const getWardsByDistrictCode=(districtCode)=>{
 }
 
 const getProvinceByCode=(provinceCode)=>{
-    
     const provinces= pcVN.getProvinces();
     const result=provinces.filter(item=>item.code===provinceCode);
     return result[0];
@@ -43,6 +42,24 @@ const getWardByCode=(wardCode)=>{
     return result[0];
 }
 
+const getProvinceCodeByName=(name)=>{
+    const provinces= pcVN.getProvinces();
+    const result= provinces.filter(item=>item.name===name);
+    return result[0];
+}
+
+const getSpecificDistrictByProvinceCodeAndName=(provinceCode, districtName)=>{
+    const district=getDistrictsByProvinceCode(provinceCode);
+    const result=district.filter(item=>item.name===districtName);
+    return result[0];
+}
+
+const getSpecificWardByDistrictCodeAndName=(districtCode, wardName)=>{
+    const ward=getWardsByDistrictCode(districtCode);
+    const result=ward.filter(item=>item.name===wardName);
+    return result[0];
+}
+
 export const provinceAPI = {
     getAllProvinces,
     getAllDistricts,
@@ -51,5 +68,8 @@ export const provinceAPI = {
     getWardsByDistrictCode,
     getProvinceByCode,
     getDistrictByCode,
-    getWardByCode
+    getWardByCode,
+    getProvinceCodeByName,
+    getSpecificDistrictByProvinceCodeAndName,
+    getSpecificWardByDistrictCodeAndName
 }

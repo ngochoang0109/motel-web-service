@@ -56,6 +56,21 @@ const getAllWaitingPosts=()=>{
     return callAPI(headers,'admin/posts/wait-ing',"GET");
 }
 
+const getDetailPostWaitingById=(id)=>{
+    const headers= authHeader();
+    return callAPI(headers,`admin/posts/wait-ing/${id}`,"GET");
+}
+
+const updateStatusPost=(id, status)=>{
+    const headers= authHeader();
+    return callAPI(headers,`admin/posts/wait-ing/approve/${id}/${status}`,"GET");
+}
+
+const getPostDetailById=(id)=>{
+    const headers= authHeader();
+    return callAPI(headers,`posts/${id}`,"GET");
+}
+
 
 export const postService = {
     createPost, 
@@ -65,5 +80,8 @@ export const postService = {
     getPosts,
     getTypePosts,
     searchPostByCriteria,
-    getAllWaitingPosts
+    getAllWaitingPosts,
+    getDetailPostWaitingById,
+    updateStatusPost,
+    getPostDetailById
 } 

@@ -8,6 +8,8 @@ import waitingPostsReducer from './waitingPostsReducer';
 import menuPostReducer from './user/menuPostReducer';
 import typePostsReducer from './typePostsReducer';
 import userInfor from './user/userInfor';
+import postAdmin from './admin/post';
+import postUser from './user/postUser';
 
 const appReducer = combineReducers({
     alertReducer,
@@ -17,7 +19,9 @@ const appReducer = combineReducers({
     waitingPostsReducer,
     menuPostReducer,
     typePostsReducer,
-    userInfor
+    userInfor,
+    postAdmin,
+    postUser
 })
 
 const rootReducer = (state, action) => {

@@ -1,10 +1,10 @@
-import formatDate from './../../../utils/fomatDate';
+import formatDate from './../../../utils/formatDate';
 import './PostCard.css';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 const PostCard = (props) => {
     const post = props.post;
-    const address = post.address.split("/");
+    const address = post.address.split("-");
 
     const [time,setTime]=useState("");
     
@@ -41,7 +41,7 @@ const PostCard = (props) => {
                         <div className="projcard-tagbox">
                             <span className="projcard-tag">{`${post.price}/Tháng`}</span>
                             <span className="projcard-tag">{post.areage}m<sup>2</sup></span>
-                            <span className="projcard-tag">{`${address[address.length - 2]}/${address[address.length - 1].slice(0, 17)}...`}</span>
+                            <span className="projcard-tag">{`${address[address.length - 2]} - ${address[address.length - 1].slice(0, 17)}...`}</span>
                             <span className="projcard-tag">{post.fullName}</span>
                             <span className="projcard-tag">{time}</span>
                         </div>

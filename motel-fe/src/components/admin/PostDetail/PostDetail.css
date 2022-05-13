@@ -1,0 +1,66 @@
+.content{
+    background-color: white;
+}
+
+.header-post{
+    margin-bottom: 1rem;
+}
+
+.header-post h3{
+    font-weight: bold;
+}
+
+.content-post *{
+    margin-bottom: 5px;
+    
+}
+
+.content-post .row{
+    display: flex;
+    flex-direction: row;
+}
+
+.information-detail{
+    width: 20rem;
+    display: flex;
+    flex-direction: row;
+    margin-right: 5rem;
+}
+
+.label-post{
+    margin-right: 5px;
+}
+
+.data-label{
+    font-weight: bold;
+}
+
+.information-detail-address{
+    display: flex;
+    flex-direction: row;
+}
+
+.map-block{
+    margin-bottom: 20px;
+}
+
+.pre-image{
+    display: flex;
+    flex-direction: row;
+    padding: auto;
+    border-radius: 10px;
+}
+
+.pre-image img{
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 20%;
+    /* Set a small width */
+    height: 156.400px;
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+.mg-2-rem{
+    margin-bottom: 2rem;
+}

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kltn.motelbe.constant.PageAndSortConstant;
-import com.kltn.motelbe.entity.Post;
 import com.kltn.motelbe.paging.Paging;
 import com.kltn.motelbe.payload.response.PostDetailResp;
 import com.kltn.motelbe.payload.response.PostResponse;
@@ -39,5 +38,12 @@ public class AdminPostController {
 	public ResponseEntity<PostDetailResp> getPostDetail(@PathVariable("id") long id){
 		PostDetailResp post= postService.getDetailPost(id);
 		return new ResponseEntity<PostDetailResp>(post, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/wait-ing/approve/{id}/{status}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	public ResponseEntity<?> updateStatusPost(@PathVariable("id") long id, @PathVariable("status") boolean status){
+		boolean update= postService.updateStatusPost(id, status);
+		return new ResponseEntity<Boolean>(update,HttpStatus.OK);
 	}
 }

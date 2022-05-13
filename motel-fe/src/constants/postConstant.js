@@ -7,7 +7,9 @@ const postConstant={
     GET_TYPE_POSTS:"GET_TYPE_POSTS",
     PHONG_TRO_TYPE:"Phòng trọ",
     NHA_NGUYEN_CAN_TYPE:"Nhà nguyên căn",
-    CAN_HO_TYPE:"Căn hộ"
+    CAN_HO_TYPE:"Căn hộ",
+    GET_POST_DETAIL_ADMIN:"GET_POST_DETAIL_ADMIN",
+    GET_POST_DETAIL:"GET_POST_DETAIL"
 }
 
 export default postConstant;

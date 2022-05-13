@@ -45,6 +45,8 @@ public class Post {
 	// reject = 0 and approved = 0 => wait-post(hidden post)
 	private boolean approved;
 	
+	private Date approvedDate;
+	
 	private boolean reject;
 	
 	@Column(name = "last_update")

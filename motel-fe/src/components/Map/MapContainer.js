@@ -17,7 +17,7 @@ const MapContainer = (props) => {
         zoom: props.zoomLevel
     });
 
-    const getLocationFromAddress = (bodyUrl, location, zoom) => {
+    const getLocationFromAddress = (bodyUrl, location, zoom,aad) => {
         axios({
             headers: {},
             method: 'GET',
@@ -27,6 +27,8 @@ const MapContainer = (props) => {
                 return res.data;
             })
             .then((address) => {
+                console.log(aad)
+                console.log(address.results)
                 setLocationState({
                     latitude: address.results[0].geometry.location.lat,
                     longitude: address.results[0].geometry.location.lng,
@@ -36,22 +38,25 @@ const MapContainer = (props) => {
             });
     }
 
+    
     useEffect(() => {
         // get location for province, district, ward.
         let bodyUrl = ``;
         if (props.address.provinceName !== '') {
             bodyUrl = `${bodyUrl}address=+${props.address.provinceName}`;
-            getLocationFromAddress(bodyUrl, props.address.provinceName, 14);
+            getLocationFromAddress(bodyUrl, props.address.provinceName, 14,"tinh");
             if (props.address.districtName !== '') {
                 bodyUrl = `${bodyUrl},+${props.address.districtName}`;
-                getLocationFromAddress(bodyUrl, props.address.districtName, 14);
+                getLocationFromAddress(bodyUrl, props.address.districtName, 14,"quan");
                 if (props.address.wardName !== '') {
                     bodyUrl = `${bodyUrl},+${props.address.wardName}`;
-                    getLocationFromAddress(bodyUrl, props.address.wardName, 16);
+                    console.log(bodyUrl);
+                    getLocationFromAddress(bodyUrl, props.address.wardName, 16,"phuong");
                     if (props.address.houseAndStreet !== '') {
                         bodyUrl = `${bodyUrl},+${props.address.houseAndStreet}`;
                         getLocationFromAddress(bodyUrl, props.address.houseAndStreet, 18);
                         props.handlerLocation({ latitude: locationState.latitude, longitude: locationState.longitude });
+                        return;
                     }
                 }
             }

@@ -9,25 +9,24 @@ const addPostRequest = (postState, imageRequest, videoRequest) => {
 
     console.log(postState)
 
-    const { title, brief, content, phone } = postState;
+    const { title, brief, content } = postState;
 
     const province = provinceAPI.getProvinceByCode(postState.provinceCode);
     const district = provinceAPI.getDistrictByCode(postState.districtCode);
     const ward = provinceAPI.getWardByCode(postState.wardCode);
-    const address = `${postState.streetAndNumOfHouse}/${ward.name}/${district.name}/${province.name}`;
+    const address = `${postState.streetAndNumOfHouse} - ${ward.name} - ${district.name} - ${province.name}`;
 
     const { acreage, airConditioner, internet, parking,
-        price, deposit, tower, floor, bedroom, 
+        price, deposit, tower, floor, bedroom,
         toilet, heater, fridge, furniture,
         xCoordinate, yCoordinate } = postState;
 
-    
+
 
     const post = {
         title,
         brief,
         content,
-        phone,
         type: convertTypePostUtils.getType(postState.type)
     }
 
@@ -46,8 +45,8 @@ const addPostRequest = (postState, imageRequest, videoRequest) => {
         heater,
         fridge,
         furniture,
-        x:parseFloat(xCoordinate.toFixed(8)),
-        y:parseFloat(yCoordinate.toFixed(8)),
+        x: xCoordinate.toString(),
+        y: yCoordinate.toString(),
     }
 
     const postRequest = {
@@ -55,22 +54,20 @@ const addPostRequest = (postState, imageRequest, videoRequest) => {
         accommodation,
     }
 
-    console.log(postRequest);
-
     return (dispatch) => {
-        return postService.createPost(postRequest,imageRequest.images,videoRequest.videos)
-                    .then((response)=>{
-                        const alertData = {
-                            type: alertConstant.SUCCESS,
-                            message: "Tạo tin thành công",
-                            success: true
-                        }
-                        dispatch(alertAction.success(alertData));
-                        return (dispatch({
-                            type: postConstant.ADD_POST,
-                            post:response.data
-                        }))
-                    })
+        return postService.createPost(postRequest, imageRequest.images, videoRequest.videos)
+            .then((response) => {
+                const alertData = {
+                    type: alertConstant.SUCCESS,
+                    message: "Tạo tin thành công",
+                    success: true
+                }
+                dispatch(alertAction.success(alertData));
+                return (dispatch({
+                    type: postConstant.ADD_POST,
+                    post: response.data
+                }))
+            })
     }
 }
 
@@ -83,7 +80,6 @@ const getAllPosts = () => {
                     page: response.data
                 }))
             })
-            .catch();
     }
 }
 
@@ -91,7 +87,6 @@ const getRejectPosts = () => {
     return (dispatch) => {
         return postService.getRejectPosts()
             .then((response) => {
-
                 return (dispatch({
                     type: postConstant.GET_REJECT_POSTS,
                     page: response.data
@@ -110,7 +105,6 @@ const getWaitingPosts = () => {
                     page: response.data
                 }))
             })
-            .catch()
     }
 }
 
@@ -123,7 +117,6 @@ const getPostsShowing = () => {
                     page: response.data
                 }))
             })
-            .catch()
     }
 }
 
@@ -140,8 +133,6 @@ const getTypePosts = () => {
 }
 
 const getPostsBySearchCriteria = (searchCriteria) => {
-
-    console.log(searchCriteria)
 
     let preUrl = `auth/posts/search`;
     let page = `&pageNo=0&pageSize=10&sort=createAt`;
@@ -174,9 +165,66 @@ const getAllPostsWaiting = () => {
                     page: response.data
                 }))
             })
-            .catch()
     }
 }
+
+const getPostWaitingDetailById = (id) => {
+    return (dispatch) => {
+        return postService.getDetailPostWaitingById(id)
+            .then((response) => {
+                return (dispatch({
+                    type: postConstant.GET_POST_DETAIL_ADMIN,
+                    data: response.data
+                }))
+            })
+    }
+}
+
+const updateStatusPost = (id, status) => {
+    return (dispatch) => {
+        return postService.updateStatusPost(id, status)
+            .then((response) => {
+                console.log(response.data);
+                let alertData;
+                if (response.data) {
+                    alertData = {
+                        type: alertConstant.SUCCESS,
+                        message: "Duyệt bài thành công",
+                        success: response.data
+                    }
+                }
+                else {
+                    alertData = {
+                        type: alertConstant.SUCCESS,
+                        message: "Từ chối thành công",
+                        success: response.data
+                    }
+                }
+                return (dispatch(alertAction.success(alertData)))
+            })
+            .catch((error) => {
+                const alertData = {
+                    type: alertConstant.ERROR,
+                    message: error.data.message,
+                    success: error.success
+                }
+                return (dispatch(alertAction.success(alertData)))
+            })
+    }
+}
+
+const getPostDetailById = (id) => {
+    return (dispatch) => {
+        return postService.getPostDetailById(id)
+            .then((response) => {
+                return (dispatch({
+                    type: postConstant.GET_POST_DETAIL,
+                    data: response.data
+                }))
+            })
+    }
+}
+
 
 export const postAction = {
     addPostRequest,
@@ -186,5 +234,8 @@ export const postAction = {
     getPostsShowing,
     getTypePosts,
     getPostsBySearchCriteria,
-    getAllPostsWaiting
+    getAllPostsWaiting,
+    getPostWaitingDetailById,
+    getPostDetailById,
+    updateStatusPost
 }
