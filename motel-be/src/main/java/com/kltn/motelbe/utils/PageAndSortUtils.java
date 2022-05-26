@@ -9,4 +9,15 @@ public class PageAndSortUtils {
 		Pageable paging=PageRequest.of(pageNo, pageSize, Sort.by(field).descending());
 		return paging;
 	}
+	
+	public static Pageable getPageableWithOrder(int pageNo, int pageSize, String field, boolean accessding) {
+		Pageable paging;
+		if(accessding) {
+			paging=PageRequest.of(pageNo, pageSize, Sort.by(field).ascending());
+		}else {
+			paging=PageRequest.of(pageNo, pageSize, Sort.by(field).descending());
+		}
+		
+		return paging;
+	}
 }

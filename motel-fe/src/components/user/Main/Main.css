@@ -2,11 +2,24 @@
 
 .container-content {
     margin-top: 2rem;
-    margin-right: 18rem;
-    margin-left: 18rem;
     margin-bottom: 1rem;
 }
 
 .container-content *{
     color:black;
+}
+
+.content{
+    margin-bottom: 2rem;
+    margin-right: 18rem;
+    margin-left: 18rem;
+}
+
+.content *{
+    color:black;
+}
+
+.content .title h1{
+    font-weight: bold;
+    background-color: #fff;
 }

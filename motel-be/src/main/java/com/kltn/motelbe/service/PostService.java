@@ -32,4 +32,10 @@ public interface PostService {
 	
 	boolean updateStatusPost( long id,boolean status);
 	
+	List<PostResponse> getTopKLeastNewPost(int k, String field, long id);
+	
+	List<PostResponse> getRelatedPosts(String address, long typePost, long id, int k, String field);
+	
+	Paging<PostResponse> getPostsOfType(String shortName, int pageNo, int pageSize, String field);
+	
 }

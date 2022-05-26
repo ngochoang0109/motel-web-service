@@ -42,4 +42,12 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 	
 	@Query("SELECT p FROM Post p WHERE p.approved=false and p.reject=false")
 	Page<Post> getAllPostsWaiting(Pageable pageable);
+	
+	@Query("SELECT p FROM Post p WHERE "
+			+ "p.approved=true and p.reject=false and "
+			+ "p.typePost.id =:type and "
+			+ "p.accommodation.address like %:address% and "
+			+ "p.id!=:id")
+	Page<Post> getRelatedPosts(Pageable pageable, @Param("type") long type, 
+			@Param("address") String address, @Param("id") long id);
 }

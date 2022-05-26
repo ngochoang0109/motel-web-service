@@ -10,6 +10,8 @@ import typePostsReducer from './typePostsReducer';
 import userInfor from './user/userInfor';
 import postAdmin from './admin/post';
 import postUser from './user/postUser';
+import relatedPosts from './relatedPosts';
+import newLeastPosts from './newLeastPosts';
 
 const appReducer = combineReducers({
     alertReducer,
@@ -21,7 +23,9 @@ const appReducer = combineReducers({
     typePostsReducer,
     userInfor,
     postAdmin,
-    postUser
+    postUser,
+    relatedPosts,
+    newLeastPosts
 })
 
 const rootReducer = (state, action) => {

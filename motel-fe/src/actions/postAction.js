@@ -108,15 +108,38 @@ const getWaitingPosts = () => {
     }
 }
 
-const getPostsShowing = () => {
+const getPostsShowing = (pageNo, sort) => {
     return (dispatch) => {
-        return postService.getPosts()
-            .then((response) => {
-                return (dispatch({
-                    type: postConstant.GET_SHOWING_POSTS,
-                    page: response.data
-                }))
-            })
+        switch (sort) {
+            case 'new-post':
+                return postService.getPosts(pageNo, 'approvedDate')
+                    .then((response) => {
+                        console.log(response.data)
+                        return (dispatch({
+                            type: postConstant.GET_SHOWING_POSTS,
+                            page: response.data
+                        }))
+                    });
+            case 'price-ascending':
+                return postService.getPosts(pageNo, 'price')
+                    .then((response) => {
+                        return (dispatch({
+                            type: postConstant.GET_SHOWING_POSTS,
+                            page: response.data
+                        }))
+                    });
+            case 'acreage-ascending':
+                return postService.getPosts(pageNo, 'acreage')
+                    .then((response) => {
+                        return (dispatch({
+                            type: postConstant.GET_SHOWING_POSTS,
+                            page: response.data
+                        }))
+                    });
+            default:
+                return;
+        }
+
     }
 }
 
@@ -132,10 +155,22 @@ const getTypePosts = () => {
     }
 }
 
-const getPostsBySearchCriteria = (searchCriteria) => {
+const getPostsBySearchCriteria = (searchCriteria, pageNo, sort) => {
 
     let preUrl = `auth/posts/search`;
-    let page = `&pageNo=0&pageSize=10&sort=createAt`;
+    let page = ``;
+    // eslint-disable-next-line default-case
+    switch (sort) {
+        case 'new-post':
+            page = `&pageNo=${pageNo}&pageSize=10&sort=approvedDate`;
+            break;
+        case 'price-ascending':
+            page = `&pageNo=${pageNo}&pageSize=10&sort=price`;
+            break
+        case 'acreage-ascending':
+            page = `&pageNo=${pageNo}&pageSize=10&sort=acreage`;
+            break
+    }
     let bodyUrl = '?';
     searchCriteria.map((item) => {
         if (item.status) {
@@ -145,9 +180,9 @@ const getPostsBySearchCriteria = (searchCriteria) => {
         return [];
     });
     return (dispatch) => {
+        console.log(`${preUrl}${bodyUrl}${page}`)
         return postService.searchPostByCriteria(`${preUrl}${bodyUrl}${page}`)
             .then((response) => {
-                console.log(response.data);
                 return dispatch({
                     type: postConstant.GET_SHOWING_POSTS,
                     page: response.data
@@ -184,7 +219,6 @@ const updateStatusPost = (id, status) => {
     return (dispatch) => {
         return postService.updateStatusPost(id, status)
             .then((response) => {
-                console.log(response.data);
                 let alertData;
                 if (response.data) {
                     alertData = {

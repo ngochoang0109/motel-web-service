@@ -26,7 +26,7 @@ const PostManagementPage = () => {
 
     return (
         <div className="content">
-            <Redirect to="/home/user/posts/show-ing"></Redirect>
+            <Redirect to="/home/user-management/user/posts/show-ing"></Redirect>
             <Route path={`${path}/:name`} exact>
                 <MenuBar url={url}></MenuBar>
                 <Posts></Posts>

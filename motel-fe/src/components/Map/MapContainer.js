@@ -5,7 +5,7 @@ import LocationPin from './../LocationPin/LocationPin';
 import axios from 'axios';
 import { FOOTER_URL_GOOGLE_API, HEADER_URL_GOOGLE_API } from '../../constants/API';
 
-const MapContainer = (props) => {
+const MapContainer = (props, { ...rest }) => {
 
     const headerUrl = HEADER_URL_GOOGLE_API;
     const footerUrl = FOOTER_URL_GOOGLE_API;
@@ -17,7 +17,7 @@ const MapContainer = (props) => {
         zoom: props.zoomLevel
     });
 
-    const getLocationFromAddress = (bodyUrl, location, zoom,aad) => {
+    const getLocationFromAddress = (bodyUrl, location, zoom, aad) => {
         axios({
             headers: {},
             method: 'GET',
@@ -38,20 +38,20 @@ const MapContainer = (props) => {
             });
     }
 
-    
+
     useEffect(() => {
         // get location for province, district, ward.
         let bodyUrl = ``;
         if (props.address.provinceName !== '') {
             bodyUrl = `${bodyUrl}address=+${props.address.provinceName}`;
-            getLocationFromAddress(bodyUrl, props.address.provinceName, 14,"tinh");
+            getLocationFromAddress(bodyUrl, props.address.provinceName, 14, "tinh");
             if (props.address.districtName !== '') {
                 bodyUrl = `${bodyUrl},+${props.address.districtName}`;
-                getLocationFromAddress(bodyUrl, props.address.districtName, 14,"quan");
+                getLocationFromAddress(bodyUrl, props.address.districtName, 14, "quan");
                 if (props.address.wardName !== '') {
                     bodyUrl = `${bodyUrl},+${props.address.wardName}`;
                     console.log(bodyUrl);
-                    getLocationFromAddress(bodyUrl, props.address.wardName, 16,"phuong");
+                    getLocationFromAddress(bodyUrl, props.address.wardName, 16, "phuong");
                     if (props.address.houseAndStreet !== '') {
                         bodyUrl = `${bodyUrl},+${props.address.houseAndStreet}`;
                         getLocationFromAddress(bodyUrl, props.address.houseAndStreet, 18);
@@ -101,10 +101,14 @@ const MapContainer = (props) => {
 
     return (
         <div className="map">
-            <div className="google-map">
+            <div className="google-map" style={{
+                height: `${props.height}rem`,
+                width: "100%",
+                marginBottom: "1rem"
+            }}>
                 {loadMap()}
             </div>
-        </div>
+        </div >
     )
 
 }

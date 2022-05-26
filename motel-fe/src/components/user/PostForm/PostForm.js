@@ -62,7 +62,6 @@ const PostForm = () => {
         phone: "",
         acreage: "",
         price: 0,
-        deposit: 0,
         internet: false,
         parking: false,
         airConditioner: false,
@@ -93,48 +92,29 @@ const PostForm = () => {
         if (name === 'price' && parseFloat(value) !== 0) {
             setInputDisable(false);
         }
-        if (name === 'deposit' && value !== "" && parseFloat(post.price) !== 0) {
-            if (!checkDepositLessThanPrice(parseFloat(value), parseFloat(post.price))) {
-                alert.show('Tiền cọc nhỏ hơn tiền cho thuê', {
-                    timeout: 2500,
-                    type: 'info',
-                    onClose: () => {
-                        return;
-                    }
-                });
-            } else {
-                setPost((prePost) => {
-                    return {
-                        ...prePost,
-                        [name]: value
-                    }
-                });
-            }
-        } else {
-            if (name !== 'internet' && name !== 'parking' && name !== 'airConditioner' &&
-                name !== 'fridge' && name !== 'furniture' && name !== 'heater') {
-                setPost((prePost) => {
-                    return {
-                        ...prePost,
-                        [name]: value
-                    }
-                });
-                if (name === "provinceCode") {
-                    setProvinceName({
-                        ...provinceName,
-                        selected: true
-                    })
+
+        if (name !== 'internet' && name !== 'parking' && name !== 'airConditioner' &&
+            name !== 'fridge' && name !== 'furniture' && name !== 'heater') {
+            setPost((prePost) => {
+                return {
+                    ...prePost,
+                    [name]: value
                 }
-
-            } else {
-                setPost((prePost) => {
-                    return {
-                        ...prePost,
-                        [name]: isChecked
-                    }
-                });
+            });
+            if (name === "provinceCode") {
+                setProvinceName({
+                    ...provinceName,
+                    selected: true
+                })
             }
 
+        } else {
+            setPost((prePost) => {
+                return {
+                    ...prePost,
+                    [name]: isChecked
+                }
+            });
         };
     }
 
@@ -184,7 +164,6 @@ const PostForm = () => {
                 phone: "",
                 acreage: postUser.accommodationDto.acreage,
                 price: postUser.accommodationDto.price,
-                deposit: postUser.accommodationDto.deposit,
                 internet: postUser.accommodationDto.internet,
                 parking: postUser.accommodationDto.parking,
                 airConditioner: postUser.accommodationDto.airConditioner,
@@ -296,12 +275,7 @@ const PostForm = () => {
         }
     }
 
-    const checkDepositLessThanPrice = (deposit, price) => {
-        if (deposit <= price) {
-            return true;
-        }
-        return false;
-    }
+
     const alertStatus = useSelector(state => state.alertReducer);
 
     const handlerLocationSelect = ({ latitude, longitude }) => {
@@ -396,7 +370,9 @@ const PostForm = () => {
                                 districtName: districtName.nameDis,
                                 wardName: wardName.nameWard,
                                 houseAndStreet: houseAndStreet
-                            }}>
+                            }}
+                            height={34}>
+
                         </MapContainer>
                     </div>
 
@@ -509,14 +485,7 @@ const PostForm = () => {
                                         onChange={onChangeHandler}
                                         value={post.toilet}></input>
                                 </div> : null}
-                                <div>
-                                    <label> Tiền cọc</label>
-                                    <input type="number"
-                                        name='deposit'
-                                        onChange={onChangeHandler}
-                                        disabled={inputDisable ? "disabled" : ""}
-                                        placeholder="Đơn vị VNĐ" value={post.deposit}></input>
-                                </div>
+                                
                                 <div className='form-check'>
                                     <div className="checkbox-input">
                                         <label className="form-check-label">Máy nước nóng</label>

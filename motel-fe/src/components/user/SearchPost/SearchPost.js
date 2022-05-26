@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { postAction } from './../../../actions/postAction';
 import { provinceAPI } from './../../../utils/provinceAPI';
 import Modal from './../Modal/Modal';
@@ -7,6 +8,7 @@ import './SearchPost.css';
 
 const SearchPost = () => {
 
+    const {pageNo, sort}=useParams();
     const dispatch = useDispatch();
     const typePosts = useSelector(state => state.typePostsReducer);
     const [show, setShow] = useState(false);
@@ -66,7 +68,11 @@ const SearchPost = () => {
                 updateType.status = true;
                 updateType.data = value;
                 updateType.show=show;
-                dispatch(postAction.getPostsBySearchCriteria(searchManagement));
+                if (typeof (pageNo) === 'undefined' && typeof(sort)==='undefined') {
+                    dispatch(postAction.getPostsBySearchCriteria(searchManagement,0,'new-post'));
+                }else{
+                    dispatch(postAction.getPostsBySearchCriteria(searchManagement,pageNo,sort));
+                }
                 setShow(false);
                 return;
             case searchManagement[2].type:
@@ -78,7 +84,11 @@ const SearchPost = () => {
                 }else{
                     updateAddress.show=show
                 }
-                dispatch(postAction.getPostsBySearchCriteria(searchManagement));
+                if (typeof (pageNo) === 'undefined' && typeof(sort)==='undefined') {
+                    dispatch(postAction.getPostsBySearchCriteria(searchManagement,0,'new-post'));
+                }else{
+                    dispatch(postAction.getPostsBySearchCriteria(searchManagement,pageNo,sort));
+                }
                 setShow(false);
                 return;
             default:
@@ -114,23 +124,23 @@ const SearchPost = () => {
         </Modal>
     }
 
-    const showDistrictsByProvinceCode = (title) => {
-        const districts = provinceAPI.getDistrictsByProvinceCode(79);
-        const content = (<ul className='itemList'>
-            {districts.map((value, index) => {
-                return <li key={value.code}
-                    onClick={() => handlerSearchFields(value.name)}
-                    name={searchManagement[1].type}>
-                    <span>{value.name}</span>
-                    <i className="fas fa-solid fa-arrow-right pd-l"></i>
-                </li>
-            })}
-        </ul>)
-        return <Modal title={title}
-            onClose={() => setShow(false)} show={show}
-            content={content}>
-        </Modal>
-    }
+    // const showDistrictsByProvinceCode = (title) => {
+    //     const districts = provinceAPI.getDistrictsByProvinceCode(79);
+    //     const content = (<ul className='itemList'>
+    //         {districts.map((value, index) => {
+    //             return <li key={value.code}
+    //                 onClick={() => handlerSearchFields(value.name)}
+    //                 name={searchManagement[1].type}>
+    //                 <span>{value.name}</span>
+    //                 <i className="fas fa-solid fa-arrow-right pd-l"></i>
+    //             </li>
+    //         })}
+    //     </ul>)
+    //     return <Modal title={title}
+    //         onClose={() => setShow(false)} show={show}
+    //         content={content}>
+    //     </Modal>
+    // }
 
     const showFilter = () => {
         let title = "";
@@ -172,7 +182,7 @@ const SearchPost = () => {
                 </div>
                 <div className="type-post-search" role="button" onClick={showModalSearch} name={searchManagement[1].type}>
                     <i className="fas fa-solid fa-hotel"></i>
-                    <span name={searchManagement[1].type}>{searchManagement[1].show===""?"Phòng trọ, nhà trọ":searchManagement[1].show}</span>
+                    <span name={searchManagement[1].type}>{searchManagement[1].show===""?"Loại bất động sản":searchManagement[1].show}</span>
                 </div>
                 <div className="address-search" role="button" onClick={showModalSearch} name={searchManagement[2].type}>
                     <i className="fas fa-solid fa-thumbtack"></i>
@@ -181,6 +191,10 @@ const SearchPost = () => {
                 <div className="price-search" role="button" onClick={showModalSearch} name={searchManagement[3].type}>
                     <i className="fas fa-regular fa-tag"></i>
                     <span name={searchManagement[3].type}>Giá</span>
+                </div>
+                <div className="acreage-search" role="button" onClick={showModalSearch} name={searchManagement[4].type}>
+                    <i className="fas fa-solid fa-chart-area"></i>
+                    <span name={searchManagement[4].type}>Diện tích</span>
                 </div>
                 <div className="acreage-search" role="button" onClick={showModalSearch} name={searchManagement[4].type}>
                     <i className="fas fa-solid fa-chart-area"></i>

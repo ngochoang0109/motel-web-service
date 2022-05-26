@@ -29,7 +29,9 @@ public class PostMapper {
 											post.getCreateAt(), post.getAccommodation().getAddress(),
 											post.getBrief(),post.getContent(),
 											post.getAccommodation().getAcreage(),
-											post.getUser().getFullname(), post.getUser().getPhone(),post.getTypePost().getId());;
+											post.getUser().getFullname(), 
+											post.getUser().getPhone(),
+											post.getTypePost().getId());
 		return postResponse;
 	}
 	

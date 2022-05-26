@@ -42,10 +42,10 @@ const Header = () => {
             </div>
             <ul className="nav-links">
                 <li><Link to="/"><i className="fas fa-solid fa-landmark"></i> Trang chủ</Link></li>
-                <li><Link to="/home/user/posts"><i className="fas fa-solid fa-users"></i> Quản lý tin</Link></li>
-                <li><a href="/#"><i className="fas fa-solid fa-bookmark"></i> Tin đã lưu</a></li>
-                {/* <li><a href="/#"><i className="fas fa-solid fa-cart-arrow-down"></i> Đơn hàng đã cọc</a></li> */}
-                <li><a href="/#"><i className="fas fa-solid fa-bell"></i> Thông báo</a></li>
+                <li><Link to="/home/cho-thue-phong-tro"><i className="fas fa-hotel"></i> Cho thuê phòng trọ</Link></li>
+                <li><Link to="/home/cho-thue-can-ho"><i className="fas fa-building"></i> Cho thuê căn hộ</Link></li>
+                <li><Link to="/home/nha-cho-thue"><i className="fas fa-house-damage"></i> Nhà cho thuê</Link></li>
+                <li><Link to="/home/user-management/user/posts"><i className="fas fa-solid fa-users"></i> Quản lý tin</Link></li>
                 <li className="dropdown-action">
                     <div className="hover">
                         <label htmlFor="btn" className="button">
@@ -58,7 +58,6 @@ const Header = () => {
                             {auth ? "" : <li><Link to="/register">Đăng ký</Link></li>}
                             {auth ? <li><Link to="/login" onClick={handlerLogout}>Đăng xuất</Link></li>
                                 : <li><Link to="/login">Đăng nhập</Link></li>}
-
                             <li><a href="/#">Lịch sử giao dịch</a></li>
                         </ul>
                     </div>

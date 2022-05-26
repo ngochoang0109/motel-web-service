@@ -34,9 +34,9 @@ const getWaitingPostsOfUser=()=>{
     return callAPI(headers,"posts/wait-ing","GET");
 }
 
-const getPosts=()=>{
+const getPosts=(pageNo,sort)=>{
     const headers=authHeader();
-    return callAPI(headers,"auth/posts/menu-post?pageNo=0&pageSize=10&sort=createAt","GET");
+    return callAPI(headers,`auth/posts/menu-post?pageNo=${pageNo}&pageSize=10&sort=${sort}`,"GET");
 }
 
 
